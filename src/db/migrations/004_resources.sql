@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS resources(
-    resourseId          SERIAL PRIMARY KEY,
+    resourceId          SERIAL PRIMARY KEY,
     topicId             INTEGER REFERENCES topics(topicId) ON DELETE CASCADE,
     url                 TEXT,
     type                VARCHAR(50),
