@@ -39,13 +39,16 @@ const runMigrations = async () => {
     const filePath = path.join(migrationsDir, sqlFile)
     const sql = fs.readFileSync(filePath, 'utf-8')
 
+    await pool.query('BEGIN')
     try {
       await pool.query(sql)
       await pool.query(
         'INSERT INTO schema_migrations (version) VALUES ($1)', [sqlFile]
       );
+      await pool.query('COMMIT');
       console.log(`✅ ${sqlFile} migrated successfully`)
     } catch (err: any) {
+      await pool.query('ROLLBACK');
       console.error(`❌ ${sqlFile} failed:`, err.message)
       process.exit(1)
     }

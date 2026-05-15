@@ -26,11 +26,11 @@ npm install -D @types/jsonwebtoken
 npm install -D @types/node
 npx tsc --init
 
-`ts.config.json`
+`tsconfig.json`
 {
   "compilerOptions": {
-    "target": "exnext",
-    "module": "module",
+    "target": "ESnext",
+    "module": "NodeNext",
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
