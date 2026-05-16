@@ -17,10 +17,19 @@ export const RegisterUser = async (input:RegisterInput):Promise<AuthResponse> =>
         let result;
         try {
              result = await pool.query(
-                'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING user_id, name, normalizedEmail',[name, normalizedEmail, hashedPassword]
+                'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING user_id, name, email',[name, normalizedEmail, hashedPassword]
              )
-        } catch (error:any) {
-            if(error?.code === '23505') throw new Error("Email already exists");
+        } catch (error:unknown) {
+            if(
+                typeof error === 'object' &&
+                error !== null &&
+                "code" in error &&
+                (error as {code?: string}).code === '23505'
+            ) {
+                const duplicateEmailError = new Error("Email already exists");
+                (duplicateEmailError as Error & { cause?: unknown }).cause = error;
+                throw duplicateEmailError;
+            }
             throw error;
         }
 
@@ -48,9 +57,12 @@ export const LoginUser = async (input:LoginInput):Promise<AuthResponse> => {
     const {email,password} = input;
     
     //Check user exists
-    const result = await pool.query(
-        'SELECT * FROM users WHERE email= $1',[email]
-    )
+    const normalizedEmail = email.trim().toLowerCase();
+
+         const result = await pool.query(
+        'SELECT * FROM users WHERE email= $1',[normalizedEmail]
+    )       
+        
     if(result.rows.length === 0){
         throw new Error('Invalid email or password')
     }
