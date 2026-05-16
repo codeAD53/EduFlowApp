@@ -1,8 +1,11 @@
+import dotenv from 'dotenv'
+dotenv.config();
 import express from 'express'
 import type {Application} from 'express'
 import cors from 'cors'
-import dotenv from 'dotenv'
+import authRoutes from './routes/auth.routes.ts'
 
+//LOAD env variables first - before anything else
 
 
 const app: Application = express();
@@ -18,6 +21,8 @@ app.get('/health',(req,res)=>{
         timeStamp: new Date().toISOString()
     })
 })
+
+app.use('/api/auth',authRoutes);
 
 const PORT = process.env.PORT || 5000;
 const start = async () => {
