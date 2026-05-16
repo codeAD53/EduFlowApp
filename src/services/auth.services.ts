@@ -7,32 +7,41 @@ import type{ RegisterInput, LoginInput, JWTPayload, AuthResponse } from "../type
 export const RegisterUser = async (input:RegisterInput):Promise<AuthResponse> => {
         const {name, email, password} = input;
         //Check if email already exist 
-        const isExist = await pool.query(
-                'SELECT user_id FROM users WHERE email = $1',
-                [email]
-        )
-        if(isExist.rows.length > 0){
-            throw new Error(`${email} Email already exists`);
-        }
+        const normalizedEmail = email.trim().toLowerCase();
 
         //Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         //Insert User
-        const result = await pool.query(
-            'INSERT INTO users (name,email,password) VALUES ($1,$2,$3) RETURNING user_id,name,email',
-            [name, email, hashedPassword]
-        )
+        let result;
+        try {
+             result = await pool.query(
+                'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING user_id, name, normalizedEmail',[name, normalizedEmail, hashedPassword]
+             )
+        } catch (error:any) {
+            if(error?.code === '23505') throw new Error("Email already exists");
+            throw error;
+        }
 
-        const user = result.rows[0];
+        const dbUser = result.rows[0];
 
         //GENERATE TOKEN
-        const payload: JWTPayload = { id: user.user_id, email: user.email }
-        const token = jwt.sign(payload, process.env.JWT_SECRET as jwt.Secret, 
-            { expiresIn: process.env.JWT_EXPIRES_IN || '7d '} as jwt.SignOptions )
+        const payload: JWTPayload = { id: dbUser.user_id, email: dbUser.email }
 
-            return {token, user}
+        const jwtSecret = process.env.JWT_SECRET;
+        if(!jwtSecret){
+            throw new Error("JWT_SECRET is not configured");
+        }
+        const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '7d';
+        const token = jwt.sign(payload, jwtSecret as jwt.Secret, 
+            { expiresIn: jwtExpiresIn} as jwt.SignOptions )
+
+            return {token, user:{
+                id: dbUser.user_id,
+                name: dbUser.name,
+                email: dbUser
+            }}
 }
 
 export const LoginUser = async (input:LoginInput):Promise<AuthResponse> => {
@@ -45,25 +54,31 @@ export const LoginUser = async (input:LoginInput):Promise<AuthResponse> => {
     if(result.rows.length === 0){
         throw new Error('Invalid email or password')
     }
-    const user = result.rows[0];
+    const dbUser = result.rows[0];
 
     //Compare Password
-    const isMatch = await bcrypt.compare(password,user.password);
+    const isMatch = await bcrypt.compare(password,dbUser.password);
     if(!isMatch){
         throw new Error("Invalid email or password");
     }
 
     //Generate Token
-    const payload: JWTPayload = { id: user.user_id, email: user.email };
-    const token = jwt.sign(payload, process.env.JWT_SECRET as jwt.Secret, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '7d'  } as jwt.SignOptions 
+    const payload: JWTPayload = { id: dbUser.user_id, email: dbUser.email };
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if(!jwtSecret){
+        throw new Error("JWT_SECRET is not configured");
+    }
+    const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '7d';
+    const token = jwt.sign(payload, jwtSecret as jwt.Secret, {
+        expiresIn: jwtExpiresIn  } as jwt.SignOptions 
     )
 
     return {token,
         user: {
-            id: user.user_id,
-            name: user.name,
-            email: user.email
+            id: dbUser.user_id,
+            name: dbUser.name,
+            email: dbUser.email
         }
     }
 }
