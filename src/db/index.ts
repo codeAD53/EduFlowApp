@@ -19,12 +19,12 @@ const pool = new Pool({
 try{
    pool.connect()
         .then(client =>{
-         console.log('Postgresql connected successfully')
+         console.log('Postgresql connected successfully .....')
          client.release()
         })
         
-}catch(error:any){
-    console.error("Database Connection Failed",error.message);
+}catch(error:unknown){
+    console.error("Database Connection Failed",(error as Error).message);
     process.exit(1);
 }
 

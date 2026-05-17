@@ -47,9 +47,9 @@ const runMigrations = async () => {
       );
       await pool.query('COMMIT');
       console.log(`✅ ${sqlFile} migrated successfully`)
-    } catch (err: any) {
+    } catch (err) {
       await pool.query('ROLLBACK');
-      console.error(`❌ ${sqlFile} failed:`, err.message)
+      console.error(`❌ ${sqlFile} failed:`, (err as Error).message)
       process.exit(1)
     }
   }
