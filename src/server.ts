@@ -4,7 +4,8 @@ import express from 'express'
 import type {Application} from 'express'
 import cors from 'cors'
 import authRoutes from './routes/auth.routes.ts'
-
+import { protect } from './middlewares/auth.middleware.ts';
+import { notFound, globalHandler } from './middlewares/error.middleware.ts';
 //LOAD env variables first - before anything else
 
 
@@ -24,11 +25,25 @@ app.get('/health',(req,res)=>{
 
 app.use('/api/auth',authRoutes);
 
+
+
+//Protected test route HERE
+app.get('/api/protected',protect,(req,res)=>{
+    res.json({
+        success: true,
+        message: 'You accessed a protected route',
+        user: req.user
+    });
+});
+
+app.use(notFound);
+app.use(globalHandler);
+
 const PORT = process.env.PORT || 5000;
 const start = async () => {
     await import('./db/index.ts');
     app.listen(PORT, ()=>{
-        console.log(`Server running on [ http://localhost:${PORT} ] (${process.env.NODE_ENV})`);
+        console.log(`Server running on [ http://localhost:${PORT} ] (${process.env.NODE_ENV}) ....`);
     })
 }   
 start().catch(error=>{

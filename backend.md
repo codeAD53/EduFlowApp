@@ -52,3 +52,17 @@ git branch -M main
 git remote add origin https://github.com/codeAD53/EduFlowApp.git
 git pull origin main --allow-unrelated-histories
 git push -u origin main
+
+
+EXAMPLE JWT BEARER TOKEN:
+ '`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpZCI6IjEyMyIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20ifQ
+.Signature<signature>`'
+
+Header:
+  `{"alg":"HS256", "typ":"JWT"}`
+
+Payload:
+`{"userId": "123", "email":"user.@example.com","iat":1700000000, "exp":1700003600}`
+
+Signature: `<SIGNATURE>`
