@@ -25,8 +25,7 @@ app.get('/health',(req,res)=>{
 
 app.use('/api/auth',authRoutes);
 
-app.use(notFound);
-app.use(globalHandler);
+
 
 //Protected test route HERE
 app.get('/api/protected',protect,(req,res)=>{
@@ -36,6 +35,9 @@ app.get('/api/protected',protect,(req,res)=>{
         user: req.user
     });
 });
+
+app.use(notFound);
+app.use(globalHandler);
 
 const PORT = process.env.PORT || 5000;
 const start = async () => {

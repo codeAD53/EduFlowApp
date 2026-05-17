@@ -29,8 +29,9 @@ export const globalHandler = (
     err: unknown,
     req:Request,
     res:Response, 
+    next: NextFunction
 ) => {
-    const error = err as ErrorWithStatus
+    const error: ErrorWithStatus = typeof err === 'object' && err !== null ? (err as ErrorWithStatus) : {message: String(err)};
     error.statusCode = error.statusCode || 500
     error.message = error.message || 'Internal Server Error'
 
@@ -61,10 +62,10 @@ export const globalHandler = (
 
     //JWT errors
     if(error.name === 'JsonWebTokenError'){
-        return res.status(401).json({success: false, meesage: 'Invalid token'})
+        return res.status(401).json({success: false, message: 'Invalid token'})
     }
 
-    if(error.name === 'TokenExpiredToken'){
+    if(error.name === 'TokenExpiredError'){
         return res.status(401).json({success: false, message: 'Token expired'})
     }
 

@@ -53,6 +53,16 @@ git remote add origin https://github.com/codeAD53/EduFlowApp.git
 git pull origin main --allow-unrelated-histories
 git push -u origin main
 
-real jwt auth bearertoken during regs/login not jwt secret= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+EXAMPLE JWT BEARER TOKEN:
+ '`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpZCI6IjEyMyIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20ifQ
-.signature `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJodHRwMjI0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzc4OTk3MTgxLCJleHAiOjE3Nzk2MDE5ODF9.xPmt6yhYwQFoPXXd17BLhNJv1Gkuycvj-MCq7r9omDU`
+.Signature<signature>`'
+
+Header:
+  `{"alg":"HS256", "typ":"JWT"}`
+
+Payload:
+`{"userId": "123", "email":"user.@example.com","iat":1700000000, "exp":1700003600}`
+
+Signature: `<SIGNATURE>`

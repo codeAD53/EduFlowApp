@@ -16,16 +16,18 @@ const pool = new Pool({
 })
 
 // Test connection
-try{
+
    pool.connect()
         .then(client =>{
          console.log('Postgresql connected successfully .....')
          client.release()
         })
         
-}catch(error:unknown){
-    console.error("Database Connection Failed",(error as Error).message);
-    process.exit(1);
-}
+.catch((error:unknown)=>{
+      console.error("Database Connection Failed",error instanceof Error ? error.message : String(error));
+      process.exit(1);
+})
+    
+
 
 export default pool
