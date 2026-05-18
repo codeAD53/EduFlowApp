@@ -25,7 +25,7 @@ export const generateAndSaveRoadmap = async (
         //Step 3: Save each topic
         for(const topic of aiRoadmap.topics){
             const topicResult = await client.query(
-                'INSERT INTO topics (roadmap_id, title, description, week_number, order_index) VALUES ($1, $2, $3, $4, $5) RETURNING *', [roadmap.roadmap_id, topic.title, topic.description, topic.weeK_number, topic.order_index]
+                'INSERT INTO topics (roadmap_id, title, description, week_number, order_index) VALUES ($1, $2, $3, $4, $5) RETURNING *', [roadmap.roadmap_id, topic.title, topic.description, topic.week_number, topic.order_index]
             )
             const savedTopic = topicResult.rows[0];
 
