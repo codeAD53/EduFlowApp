@@ -6,6 +6,7 @@ import cors from 'cors'
 import authRoutes from './routes/auth.routes.ts'
 import { protect } from './middlewares/auth.middleware.ts';
 import { notFound, globalHandler } from './middlewares/error.middleware.ts';
+import roadmapRoutes from './routes/roadmap.routes.ts'
 //LOAD env variables first - before anything else
 
 
@@ -24,7 +25,7 @@ app.get('/health',(req,res)=>{
 })
 
 app.use('/api/auth',authRoutes);
-
+app.use('/api/roadmap',roadmapRoutes)
 
 
 //Protected test route HERE
