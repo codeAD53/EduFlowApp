@@ -27,7 +27,7 @@ export interface RoadmapResponse {
     level: string
     duration: string
     is_completed: boolean
-    is_created: string
+    created_at: string
     topics: TopicResponse[]
 }
 
@@ -54,7 +54,7 @@ export interface AIRoadmapOutput{
     topics: {
         title: string
         description: string
-        weeK_number: number
+        week_number: number
         order_index: number
         resources: {
             title: string

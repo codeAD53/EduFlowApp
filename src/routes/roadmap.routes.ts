@@ -15,7 +15,7 @@ const generateRules = [
     body('duration').trim().notEmpty().withMessage("Duration is required"),
 ]
 
-router.post('/generate',generate, validate, generateRules);
+router.post('/generate', generateRules, validate, generate);
 router.get('/',getAll);
 router.get('/:id',getOne);
 router.delete('/:id',removeRoadmap);

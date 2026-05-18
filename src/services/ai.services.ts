@@ -1,9 +1,12 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { RoadmapInput, AIRoadmapOutput } from "../types/roadmaps.types.ts";
 
-const client = new Anthropic({
-    apiKey: process.env.ANTHROPIC_KEY
-});
+const apiKey = process.env.ANTHROPIC_KEY;
+if(!apiKey){
+    throw new Error("ANTHROPIC_KEY is not set");
+}
+
+const client = new Anthropic({ apiKey });
 
 export const generateRoadmapFromAI = async (
     input: RoadmapInput
@@ -24,13 +27,13 @@ export const generateRoadmapFromAI = async (
         "topics": [
             {
                 "title": "topic title",
-                "description": "what this topic covers"
+                "description": "what this topic covers",
                 "week_number": 1,
                 "order_index": 1,
                 "resources": [
                     {
                         "title": "resource title",
-                        "url": "https://example.com"
+                        "url": "https://example.com",
                         "type": "video | article | documentation | exercise"
                     }
                 ]
