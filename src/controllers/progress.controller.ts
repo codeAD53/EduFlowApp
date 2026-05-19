@@ -11,7 +11,12 @@ export const update = async (req:Request, res:Response):Promise<void> => {
         res.status(200).json({success: true, data: progress});
         
     } catch (error:unknown) {
-        res.status(500).json({success: false, message: error instanceof Error ? error.message : String(error)})
+        const message = error instanceof Error ? error.message : String(error)
+        if(message.toLowerCase().includes('not found')){
+            res.status(404).json({success: false, message});
+            return;
+        }
+        res.status(500).json({success: false, message});
         return;
     }    
 }
@@ -21,7 +26,7 @@ export const getRoadmap = async (req:Request, res:Response) => {
     try {
         
         const userId = req.user!.id;
-        const roadmap_id = parseInt(String(req.params.id),10);
+        const roadmap_id = parseInt(String(req.params.roadmapId),10);
         if(Number.isNaN(roadmap_id)){
              res.status(400).json({success: false, message: "Invalid roadmap id"})
                 return;
@@ -31,7 +36,14 @@ export const getRoadmap = async (req:Request, res:Response) => {
         res.status(200).json({success: true, data: progress})
 
     } catch (error:unknown) {
-        res.status(500).json({success: false, message: error instanceof Error ? error.message : String(error)});
-        return;
+        const message = error instanceof Error ? error.message : String(error)
+        if(message.toLowerCase().includes('not found')){
+
+            res.status(404).json({success: false, message});
+            return;
+        }
+        res.status(500).json({success: false, message});
+            return;
+
     }
 }

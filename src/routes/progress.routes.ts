@@ -18,7 +18,7 @@ const protectRules = [
         .withMessage("Status must be not_started, in_progress, completed"),
 ]
 
-router.patch('/api/progress',protectRules, validate, update);
-router.get('/api/progress/:roadmapId',getRoadmap)
+router.patch('/',protectRules, validate, update);
+router.get('/:roadmapId',getRoadmap)
 
 export default router

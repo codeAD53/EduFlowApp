@@ -2,9 +2,9 @@ import type { RoadmapInput, AIRoadmapOutput } from "../types/roadmaps.types.ts";
 import { GoogleGenAI, Type } from "@google/genai";
 
 // Ensure the environment variable is set (Gemini uses GEMINI_API_KEY by default)
-const apiKey = process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY;
+const apiKey = process.env.GEMINI_API_KEY
 if (!apiKey) {
-    throw new Error("Neither GEMINI_API_KEY nor OPENAI_API_KEY is set");
+    throw new Error("OPENAI_API_KEY is not set");
 }
 
 const ai = new GoogleGenAI({ apiKey });
@@ -82,6 +82,20 @@ export const generateRoadmapFromAI = async (
         }
 
         const roadmap: AIRoadmapOutput = JSON.parse(content);
+        for(const topic of roadmap.topics){
+            for(const resource of topic.resources){
+                 let parsed: URL;
+            try {
+                parsed = new URL(resource.url);
+            } catch {
+                throw new Error(`Invalid resource URL: ${resource.url}`);
+            }
+            if(!["http:", "https:"].includes(parsed.protocol)){
+                throw new Error(`Unsupported resource URL protocol: ${resource.url}`);
+            }
+            }
+           
+        }
         return roadmap;
 
     } catch (err) {

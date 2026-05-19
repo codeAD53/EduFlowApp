@@ -31,7 +31,7 @@ export const updateProgress = async (userId: number,
         await client.query('COMMIT');
         return result.rows[0];
     } catch (error) {
-       client.query('ROLLBACK');
+       await client.query('ROLLBACK');
        throw error;
     } 
     finally {
@@ -46,7 +46,7 @@ export const getRoadmapProgress = async (userId: number, roadmapId: number): Pro
     try {
         await client.query('BEGIN');
         const verifyRoadmap = await client.query(
-            `SELECT roadmap_id, title FROM roadmaps WHERE roadmapid = $1 AND user_id= $2`,[roadmapId, userId]
+            `SELECT roadmap_id, title FROM roadmaps WHERE roadmap_id = $1 AND user_id= $2`,[roadmapId, userId]
         )
         if(verifyRoadmap.rows.length === 0){
             throw new Error("Roadmap not found")
@@ -75,6 +75,8 @@ export const getRoadmapProgress = async (userId: number, roadmapId: number): Pro
     } catch (error) {
         await client.query('ROLLBACK');
         throw error;
+    } finally {
+        client.release();
     }
 }
 
