@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.routes.ts'
 import { protect } from './middlewares/auth.middleware.ts';
 import { notFound, globalHandler } from './middlewares/error.middleware.ts';
 import roadmapRoutes from './routes/roadmap.routes.ts'
+import progressRoutes from './routes/progress.routes.ts'
 //LOAD env variables first - before anything else
 
 
@@ -26,7 +27,7 @@ app.get('/health',(req,res)=>{
 
 app.use('/api/auth',authRoutes);
 app.use('/api/roadmap',roadmapRoutes)
-
+app.use('/api/progress',progressRoutes)
 
 //Protected test route HERE
 app.get('/api/protected',protect,(req,res)=>{
