@@ -1,4 +1,4 @@
-import api from './api'
+import api from './apii'
 import type { Roadmap } from '../types'
 
 export const generateRoadmap = async (data: {

@@ -1,4 +1,4 @@
-import api from './api'
+import api from './apii'
 import type { AuthResponse } from '../types'
 
 export const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
