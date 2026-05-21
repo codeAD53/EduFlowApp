@@ -1,6 +1,0 @@
-#initalize coderabbit
-reviews:
-      auto_review:
-            enabled: true
-            drafts: false
-language: 'en-US'
