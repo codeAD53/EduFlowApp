@@ -56,11 +56,11 @@ export const getRoadmapProgress = async (userId: number, roadmapId: number): Pro
         //GET all topics with their progress status
 
         const result = await client.query(
-            `SELECT t.topic_id, t.title, t.week_number, t.order_index, COALESCE(up.status, 'not_started') AS status FROM topics t LEFT JOIN user_progress up ON up.topic_id = t.topic_id AND up.user_id = $1 WHERE t.roadmap_id=$2 ORDER BY t.week_number, t.order_index`,[userId, roadmapId]
+            `SELECT t.topic_id, t.title, t.week_number, t.order_index, COALESCE(up.status, 'NOT_STARTED') AS status FROM topics t LEFT JOIN user_progress up ON up.topic_id = t.topic_id AND up.user_id = $1 WHERE t.roadmap_id=$2 ORDER BY t.week_number, t.order_index`,[userId, roadmapId]
         )
         const topics = result.rows;
         const total_topics = topics.length;
-        const completed_topics = topics.filter((t)=> t.status === 'completed').length;
+        const completed_topics = topics.filter((t)=> t.status === 'COMPLETED').length;
         const completion_percentage = total_topics === 0 ? 0 : Math.round((completed_topics / total_topics) * 100)
 
         await client.query(`COMMIT`);

@@ -49,7 +49,7 @@ export const RegisterUser = async (input:RegisterInput):Promise<AuthResponse> =>
             return {token, user:{
                 id: dbUser.user_id,
                 name: dbUser.name,
-                email: dbUser
+                email: dbUser.email
             }}
 }
 
