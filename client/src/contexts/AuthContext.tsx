@@ -17,7 +17,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const [user, setUser] = useState<User | null>(()=>{
         const savedUser = localStorage.getItem('user');
-        return savedUser ? JSON.parse(savedUser) : null //This is called lazy initialization — you pass a function to useState that runs once on mount and reads localStorage directly. No useEffect, no cascading renders.
+        if(!savedUser){
+            return null;
+        }
+        try {
+            return JSON.parse(savedUser) as User
+        } catch {
+            localStorage.removeItem('user')
+            return null;
+        }
+         //This is called lazy initialization — you pass a function to useState that runs once on mount and reads localStorage directly. No useEffect, no cascading renders.
     });
     const [token, setToken] = useState<string | null>(()=>{
         return localStorage.getItem('token')
@@ -42,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         <AuthContext.Provider value={{
             user,
             token,
-            isAuthenticated: !!false,
+            isAuthenticated: !!token,
             isLoading,
             login,
             logout
