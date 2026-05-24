@@ -9,7 +9,7 @@ import { FaGithub } from "react-icons/fa";
 import {motion} from 'framer-motion'
 import { STORAGE_KEYS } from "../constants/StorageKEYS";
 const initialFormState = {
-    email: localStorage.getItem('rememberEmail') || '',
+    email: localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) || '',
     password: ''
 }
 
@@ -20,7 +20,7 @@ const { login } = useAuth();
 const [formData, setFormData] = useState(()=>(initialFormState))
 const [isLoading, setIsLoading] = useState(false);
 const [showPassword, setShowPassword] = useState(false);
-const [rememberMe, setRememberMe] = useState(()=>(Boolean(localStorage.getItem('rememberEmail')))); //Boolean(null) -> false
+const [rememberMe, setRememberMe] = useState(()=>(Boolean(localStorage.getItem(STORAGE_KEYS.REMEMBER_ME)))); //Boolean(null) -> false
 
 const validationEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -35,10 +35,17 @@ const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit = async(e:React.FormEvent) => {
     e.preventDefault();
     if(isLoading) return;
+    
+    const trimmedEmail = formData.email.trim();
+    if(!validationEmail(trimmedEmail)){
+        toast.error('Please enter a valid email address');
+        return;
+    }
+    
     setIsLoading(true);
 
     try{
-        const data = await loginService(formData.email.trim(), formData.password);
+        const data = await loginService(trimmedEmail, formData.password);
         login(data.token,data.user)
 
         if(rememberMe){
@@ -51,10 +58,6 @@ const handleSubmit = async(e:React.FormEvent) => {
         navigate('/dashboard')
     }catch(error){
         const err = error as AxiosError<{message: string}>
-        if(!validationEmail(formData.email.trim())){
-            toast.error('Please enter a valid email address')
-            return;
-        }
         toast.error(err.response?.data?.message || 'Login Failed. Please check your credentials.')
     }finally{
         setIsLoading(false);

@@ -30,13 +30,36 @@ const Register = () => {
     if(password.length < 10) return 'Medium'
     return 'Strong'
   }
+
+  const validationEmail = (email:string) =>{
+    if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Enter a valid email address'
+  }
+  const validatePassword = (password: string) => {
+    if(password.length < 8) return 'Password must be at least 8 characters'
+    if(!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter'
+    if(!/\d/.test(password)) return 'Password must contain at least one number'
+    return null
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if(isLoading) return;
+    
+    const trimmedEmail = formData.email;
+    if(!validationEmail(trimmedEmail)){
+        toast.error(trimmedEmail)
+    }
+    const passwordError = validatePassword(formData.password)
+    if(passwordError) {
+      toast.error(passwordError)
+      return
+    }
+    
     setIsLoading(true)
 
     try {
       const data = await registerService(
-        formData.name,
+        trimmedEmail,
         formData.email.trim(),
         formData.password
       )
@@ -127,6 +150,7 @@ transition={{duration: 0.4}} className="min-h-screen bg-gray-950 flex items-cent
                 placeholder="••••••••"
                 required
                 minLength={8}
+                pattern="(?=.*[A-Z])(?=.*\d).*"
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3
                            text-white placeholder-gray-500 focus:outline-none
                            focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500
@@ -172,7 +196,7 @@ transition={{duration: 0.4}} className="min-h-screen bg-gray-950 flex items-cent
                       d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                     />
                     </svg>
-                    'Creating account...'
+                    Creating account...
                 </span>
               ) 
                  :  ( 'Create Account' )}

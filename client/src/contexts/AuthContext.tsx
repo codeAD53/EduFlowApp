@@ -17,20 +17,20 @@ const AuthContext = createContext<AuthContextTypes | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const [user, setUser] = useState<User | null>(()=>{
-        const savedUser = localStorage.getItem('user');
+        const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
         if(!savedUser){
             return null;
         }
         try {
             return JSON.parse(savedUser) as User
         } catch {
-            localStorage.removeItem('user')
+            localStorage.removeItem(STORAGE_KEYS.USER)
             return null;
         }
          //This is called lazy initialization — you pass a function to useState that runs once on mount and reads localStorage directly. No useEffect, no cascading renders.
     });
     const [token, setToken] = useState<string | null>(()=>{
-        return localStorage.getItem('token')
+        return localStorage.getItem(STORAGE_KEYS.TOKEN)
         
     });
     const [isLoading] = useState(false);
