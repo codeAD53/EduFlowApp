@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { User } from "../types";
+import { STORAGE_KEYS } from "../constants/StorageKEYS";
 
 interface AuthContextTypes {
     user: User | null
@@ -35,15 +36,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading] = useState(false);
 
     const login = (token: string, user: User) => {
-        localStorage.setItem('token', token)
-        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem(STORAGE_KEYS.TOKEN, token)
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user))
         setToken(token)
         setUser(user)
     }
 
     const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user')
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.USER)
         setToken(null)
         setUser(null)
     }
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         <AuthContext.Provider value={{
             user,
             token,
-            isAuthenticated: !!token,
+            isAuthenticated: !!token && !!user,
             isLoading,
             login,
             logout
