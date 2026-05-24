@@ -33,6 +33,7 @@ const Register = () => {
 
   const validationEmail = (email:string) =>{
     if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Enter a valid email address'
+    return null;
   }
   const validatePassword = (password: string) => {
     if(password.length < 8) return 'Password must be at least 8 characters'
@@ -45,9 +46,11 @@ const Register = () => {
     e.preventDefault()
     if(isLoading) return;
     
-    const trimmedEmail = formData.email;
-    if(!validationEmail(trimmedEmail)){
+    const trimmedEmail = formData.email.trim();
+    const emailError = validationEmail(trimmedEmail)
+    if(emailError){
         toast.error(trimmedEmail)
+        return;
     }
     const passwordError = validatePassword(formData.password)
     if(passwordError) {
@@ -59,8 +62,8 @@ const Register = () => {
 
     try {
       const data = await registerService(
+        formData.name.trim(),
         trimmedEmail,
-        formData.email.trim(),
         formData.password
       )
       login(data.token, data.user)

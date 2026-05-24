@@ -49,7 +49,7 @@ const handleSubmit = async(e:React.FormEvent) => {
         login(data.token,data.user)
 
         if(rememberMe){
-            localStorage.setItem(STORAGE_KEYS.REMEMBER_ME,formData.email)
+            localStorage.setItem(STORAGE_KEYS.REMEMBER_ME,trimmedEmail)
         }else{
             localStorage.removeItem(STORAGE_KEYS.REMEMBER_ME)
         }
