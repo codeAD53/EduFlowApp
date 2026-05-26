@@ -103,7 +103,7 @@ const Dashboard = () => {
                 {/* Loading state */}
                 {isLoading && (
                    <div className="flex items-center justify-center py-20">
-                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-indigo-500 border-opacity-50" />
+                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-indigo-500/50" />
                    </div>
                 )}
 
@@ -131,6 +131,14 @@ const Dashboard = () => {
                         {roadmaps.map((roadmap, index)=>(
                             <motion.div
                             key={roadmap.roadmap_id}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={((e)=>{
+                                if(e.key === 'Enter' || e.key === ' '){
+                                    e.preventDefault();
+                                    navigate(`/roadmap/${roadmap.roadmap_id}`);
+                                }
+                            })}
                             initial={{opacity: 0, y: 20}}
                             animate={{opacity: 1, y: 0}}
                             transition={{delay: index * 0.07}}
@@ -139,7 +147,8 @@ const Dashboard = () => {
                                 <div className="flex items-center justify-between mb-4">
                                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${getLevelColor(roadmap.level)}`}>{roadmap.level}</span>
 
-                                    <button onClick={(e)=> handleDelete(roadmap.roadmap_id, e)} disabled={deletingId === roadmap.roadmap_id} className="text-gray-600 hover:text-red-400 transition disabled:cursor-not-allowed">
+                                    <button onClick={(e)=> handleDelete(roadmap.roadmap_id, e)} disabled={deletingId === roadmap.roadmap_id}
+                                    aria-label={`Delete roadmap ${roadmap.title}`}className="text-gray-600 hover:text-red-400 transition disabled:cursor-not-allowed">
                                         <Trash2 size={16}/>
                                     </button>
                                 </div>

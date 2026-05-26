@@ -31,7 +31,7 @@ const Register = () => {
     return 'Strong'
   }
 
-  const validationEmail = (email: string) => {
+  const validateEmail = (email: string) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return 'Please enter a valid email address'
   }
@@ -50,7 +50,7 @@ const Register = () => {
     if(isLoading) return;
     
     const trimmedEmail = formData.email.trim();
-    const emailError = validationEmail(trimmedEmail)
+    const emailError = validateEmail(trimmedEmail)
     if(emailError){
         toast.error(emailError)
         return;
