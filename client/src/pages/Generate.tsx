@@ -23,7 +23,7 @@ const Generate = () => {
     }
 
     const handleSelect = (field: string, value: string) => {
-        setFormData((prev)=>({...prev, [field]: [value]}));
+        setFormData((prev)=>({...prev, [field]: value}));
     }
     const handleSubmit = async (e:React.FormEvent) => {
         e.preventDefault();
@@ -65,7 +65,7 @@ return (
         {/* Header */}
         <motion.div 
             initial={{opacity: 0, y:20}}
-            animate={{opacity: 0, y:0}}
+            animate={{opacity: 1, y:0}}
             className="mb-8">
                 <h2 className="text-2xl font-bold text-white flex items-center gap-2 ">
                     <Sparkles size={24} className="text-indigo-400"/>
@@ -90,7 +90,7 @@ return (
                     <BookIcon />
                     What do you want to learn?
                     </label>
-                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="e.g. React, Machine Learning, System Design" required disabled={isLoading} className="w-full bg-gray-800 border-gray-700 rounded-lg ox-4 py-3 text-white placeholder-gray-500  focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed" /> 
+                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="e.g. React, Machine Learning, System Design" required disabled={isLoading} className="w-full bg-gray-800 border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500  focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed" /> 
                 </div>
 
                 {/* Goal */}
@@ -132,7 +132,7 @@ return (
                     <div className="grid grid-cols-3 gap-3">
                         {durations.map(duration=>(
                             <button key={duration}type="button"
-                            onClick={() => handleSelect('duration',duration)} disabled={isLoading} className={`py-3 rounded-lg border text-sm font-semibold transition disabled:cursor-not-allowed ${formData.duration ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-indigo-500/50'}`}>{duration}</button>
+                            onClick={() => handleSelect('duration',duration)} disabled={isLoading} className={`py-3 rounded-lg border text-sm font-semibold transition disabled:cursor-not-allowed ${formData.duration === duration ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-indigo-500/50'}`}>{duration}</button>
                         ))}
                     </div>
                 </div>
