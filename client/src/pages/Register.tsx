@@ -31,10 +31,13 @@ const Register = () => {
     return 'Strong'
   }
 
-  const validationEmail = (email:string) =>{
-    if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Enter a valid email address'
-    return null;
+  const validateEmail = (email: string) => {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return 'Please enter a valid email address'
   }
+
+  return null
+}
   const validatePassword = (password: string) => {
     if(password.length < 8) return 'Password must be at least 8 characters'
     if(!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter'
@@ -47,9 +50,9 @@ const Register = () => {
     if(isLoading) return;
     
     const trimmedEmail = formData.email.trim();
-    const emailError = validationEmail(trimmedEmail)
+    const emailError = validateEmail(trimmedEmail)
     if(emailError){
-        toast.error(trimmedEmail)
+        toast.error(emailError)
         return;
     }
     const passwordError = validatePassword(formData.password)
@@ -151,13 +154,14 @@ transition={{duration: 0.4}} className="min-h-screen bg-gray-950 flex items-cent
                 onChange={handleChange}
                 autoComplete='current-password'
                 placeholder="••••••••"
+                disabled={isLoading}
                 required
                 minLength={8}
                 pattern="(?=.*[A-Z])(?=.*\d).*"
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3
                            text-white placeholder-gray-500 focus:outline-none
                            focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500
-                           transition"
+                           transition disabled:cursor-not-allowed"
               />
               <p className="text-gray-600 text-xs mt-1">
                 Min 8 characters, one uppercase, one number
