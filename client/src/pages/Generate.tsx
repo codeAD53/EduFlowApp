@@ -32,10 +32,6 @@ const Generate = () => {
             toast.error("Please select a level");
             return
         }
-        if(!formData.goal){
-            toast.error("Please select a goal");
-            return
-        }
         if(!formData.duration){
             toast.error("Please select a duration");
             return

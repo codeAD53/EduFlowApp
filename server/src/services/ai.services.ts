@@ -4,7 +4,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 // Ensure the environment variable is set (Gemini uses GEMINI_API_KEY by default)
 const apiKey = process.env.GEMINI_API_KEY
 if (!apiKey) {
-    throw new Error("OPENAI_API_KEY is not set");
+    throw new Error("GEMINI_API_KEY is not set");
 }
 
 const ai = new GoogleGenAI({ apiKey });
