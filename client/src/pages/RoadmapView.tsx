@@ -22,6 +22,20 @@ const RoadmapView = () => {
 
     useEffect(()=>{
 
+        if(!id){
+            toast.error("Invalid roadmap Id");
+            navigate('/dashboard');
+            queueMicrotask(() => setIsLoading(false));
+            return;
+        }
+
+        const roadmapId = Number(id);
+        if(Number.isNaN(roadmapId)){
+            toast.error("Invalid roadmap Id");
+            navigate('/dashboard');
+            queueMicrotask(() => setIsLoading(false));
+            return;
+        }
         const fetchData = async (roadmapId:number) => {
             try {
                 const [roadmapData, progressData] = await Promise.all([
@@ -40,7 +54,7 @@ const RoadmapView = () => {
             }
         }
         
-        if(id) fetchData(parseInt(id))
+        fetchData(roadmapId);
     }, [id, navigate])
 
 
@@ -127,7 +141,7 @@ const RoadmapView = () => {
         return (
             <div className="min-h-screen bg-gray-950 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-2
-                        border-indigo-500 border-opacity-50" />
+                        border-indigo-500/50" />
             </div>
         )
     }
@@ -171,8 +185,8 @@ return (
                     {/* Progress bar */}
                     <div className="w-full bg-gray-800 rounded-full h-2.5">
                         <motion.div 
-                        initial={{opacity: 0, y: 20}}
-                        animate={{opacity: 1, y:0}}
+                        initial={{width: 0}}
+                        animate={{width: `${progress.completion_percentage}%`}}
                         transition={{duration: 0.8, ease: 'easeInOut'}}
                         className="bg-indigo-500 h-2.5 rounded-full" />  
                     </div>
@@ -236,7 +250,7 @@ return (
 
                                                 {/* In Progress button */}
                                                 {status !== 'COMPLETED' && (
-                                                    <button onClick={()=>handleProgressUpdate(topic.topic_id, status==='IN_PROGRESS' ? 'NOT_STARTED' : 'IN_PROGRESS')} disabled={isUpdating} className={`text-xs px-2.5 py-1 rounded-full border transistion disabled:cursor-not-allowed ${status === 'IN_PROGRESS'? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
+                                                    <button onClick={()=>handleProgressUpdate(topic.topic_id, status==='IN_PROGRESS' ? 'NOT_STARTED' : 'IN_PROGRESS')} disabled={isUpdating} className={`text-xs px-2.5 py-1 rounded-full border transition disabled:cursor-not-allowed ${status === 'IN_PROGRESS'? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
                                         : 'text-gray-600 border-gray-700 hover:text-yellow-400'}`}>{status === 'IN_PROGRESS' ? 'In Progress': 'Start'}</button>
                                                 )}
 
@@ -270,10 +284,10 @@ return (
                                              bg-gray-800 hover:bg-gray-700
                                              border border-gray-700 transition group"
                                              >
-                                                <span className={`text-xs px-2 py-0.5 rounded-full font-meduim capitalize shrink-0 ${getResourceTypeColor(resource.type)}`}>{resource.type}</span>
+                                                <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize shrink-0 ${getResourceTypeColor(resource.type)}`}>{resource.type}</span>
                                                 <span className="text-gray-300 text-sm flex-1 group-hover:text-white transition truncate">{resource.title}</span>
                                                 <ExternalLink size={14} className="text-gray-600
-                                                group-hover:text-indigo-400shrink-0"/>
+                                                group-hover:text-indigo-400 shrink-0"/>
                                              </a>
                                                             ))}
                                                         </div>

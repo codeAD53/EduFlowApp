@@ -52,7 +52,7 @@ export interface RoadmapProgress {
     title: string
     week_number: number
     order_index: number
-    status: string
+    status: ProgressStatus
   }[]
 }
 
