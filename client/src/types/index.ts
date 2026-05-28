@@ -52,8 +52,8 @@ export interface RoadmapProgress {
     title: string
     week_number: number
     order_index: number
-    status: string
+    status: ProgressStatus
   }[]
 }
 
-export type ProgressStatus = 'not_started' | 'in_progress' | 'completed'
+export type ProgressStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED'
