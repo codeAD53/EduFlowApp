@@ -66,7 +66,7 @@ return (
                 transition={{duration: 0.5}}
                 >
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 bg-indigo-500/10 border-indigo-500/20 rounded-full px-4 py-1.5 mb-6">
+                    <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 mb-6">
                     <Sparkles size={14} className="text-indigo-400"/>
                     <span className="text-indigo-400 text-sm font-medium">AI-Powered Learning</span>
                     </div>
