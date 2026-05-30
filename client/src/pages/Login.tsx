@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -15,12 +15,16 @@ const initialFormState = {
 
 const Login = () => {
 const navigate = useNavigate();
-const { login } = useAuth();
+const { isAuthenticated, login } = useAuth();
 
 const [formData, setFormData] = useState(()=>(initialFormState))
 const [isLoading, setIsLoading] = useState(false);
 const [showPassword, setShowPassword] = useState(false);
 const [rememberMe, setRememberMe] = useState(()=>(Boolean(localStorage.getItem(STORAGE_KEYS.REMEMBER_ME)))); //Boolean(null) -> false
+
+useEffect(()=>{ //Redirect if already logged in
+    if(isAuthenticated) navigate('/dashboard')
+},[isAuthenticated, navigate])
 
 const validationEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)

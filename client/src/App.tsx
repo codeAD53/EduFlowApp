@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoutes'
@@ -8,6 +8,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Generate from './pages/Generate'
 import RoadmapView from './pages/RoadmapView'
+import NotFound from './pages/notFound'
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
 
           {/* Catch All - redirect to home */}
           <Route path='*' element={
-            <Navigate to='/' replace />
+            <NotFound />
           } />
         </Routes>
       </AuthProvider>
