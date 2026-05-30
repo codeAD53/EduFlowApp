@@ -7,7 +7,8 @@ export const update = async (req:Request, res:Response):Promise<void> => {
     try {
         const user_id =  req.user!.id;
         const progress = await updateProgress(user_id, req.body);
-    
+        console.log("PATCH /progress hit");
+        console.log(req.body);
         res.status(200).json({success: true, data: progress});
         
     } catch (error:unknown) {

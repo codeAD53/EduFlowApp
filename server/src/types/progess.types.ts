@@ -1,4 +1,4 @@
-export type ProgressStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED'
+export type ProgressStatus = 'not_started' | 'in_progress' | 'completed'
 
 export interface UpdateProgressInput {
         topic_id: number
