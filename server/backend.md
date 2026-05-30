@@ -66,3 +66,16 @@ Payload:
 `{"userId": "123", "email":"user.@example.com","iat":1700000000, "exp":1700003600}`
 
 Signature: `<SIGNATURE>`
+
+Step 1 → Initialize project + folder structure
+Step 2 → Install all packages
+Step 3 → Configure TypeScript (tsconfig.json)
+Step 4 → Setup .env file
+Step 5 → Create basic Express server (server.ts)
+Step 6 → Connect PostgreSQL database
+Step 7 → Run migrations (create tables)
+Step 8 → Auth routes (register + login)
+Step 9 → Roadmap routes (generate + save + fetch)
+Step 10 → Progress routes (update + fetch)
+Step 11 → AI service (generate roadmap from AI)
+Step 12 → Test everything with Postman
