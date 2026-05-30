@@ -80,7 +80,7 @@ const RoadmapView = () => {
             setProgress(prev => {
                 if(!prev) return prev;
                 const updatedTopics = prev.topics.map(t => t.topic_id === topicId ? {...t, status} : t)
-                const completed = updatedTopics.filter(t=>t.status === 'COMPLETED').length
+                const completed = updatedTopics.filter(t=>t.status === 'completed').length
                 const percentage = Math.round((completed / updatedTopics.length) * 100)
                 return {
                     ...prev,
@@ -90,9 +90,9 @@ const RoadmapView = () => {
                 }
             })
             // ensure correct typing when comparing ProgressStatus to string literals
-            const message = status === ("COMPLETED" as unknown as ProgressStatus)
+            const message = status === 'completed'
                 ? 'Topic completed!'
-                : status === ("IN_PROGRESS" as unknown as ProgressStatus)
+                : status === 'in_progress'
                     ? 'Marked as in progress'
                     : 'Marked as not started'
 
@@ -108,13 +108,13 @@ const RoadmapView = () => {
 
 
     const getTopicStatus = (topicId:number):ProgressStatus => {
-        return (progress?.topics.find(t => t.topic_id === topicId)?.status as ProgressStatus) || 'NOT_STARTED'
+        return (progress?.topics.find(t => t.topic_id === topicId)?.status as ProgressStatus) || 'not_started'
     }
 
     const getStatusColor = (status: string) => {
         switch(status){
-            case 'COMPLETED': return 'text-green-400 border-green-500/30 bg-green-500/10'
-            case 'IN_PROGRESS': return 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10'
+            case 'completed': return 'text-green-400 border-green-500/30 bg-green-500/10'
+            case 'in_progress': return 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10'
             default:            return 'text-gray-500 border-gray-700 bg-gray-800/50'
         }
     }
@@ -207,6 +207,7 @@ return (
         {
             groupedTopics && Object.entries(groupedTopics).map(([week, topics], weekIndex)=>(
                 <motion.div
+                key={week}
                 initial={{opacity: 0, y:20}}
                 animate={{opacity: 1, y:0}}
                 transition={{delay: weekIndex * 0.05}}
@@ -231,12 +232,12 @@ return (
                                         {/* Topic Header */}
                                         <div className="flex items-center gap-3 p-4">
                                             {/* Status icon */}
-                                            <button onClick={()=>handleProgressUpdate(topic.topic_id, status === 'COMPLETED' ?'NOT_STARTED': 'COMPLETED')}
+                                            <button onClick={()=>handleProgressUpdate(topic.topic_id, status === 'completed' ? 'not_started' : 'completed')}
                                                 disabled={isUpdating}
                                                 className="shrink-0 disabled:cursor-not-allowed ">
                                                     {isUpdating ? (
                                                         <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-indigo-400 "/>
-                                                    ) : status === 'COMPLETED' ? (
+                                                    ) : status === 'completed' ? (
                                                         <CheckCircle2 size={22} className="text-green-400" />
                                                     ): (
                                                         <Circle size={22} className="text-gray-600"/>
@@ -245,13 +246,13 @@ return (
 
                                                 {/* Topic title */}
                                                 <div className="flex-1 min-w-0">
-                                                    <p className={`font-medium truncate ${status === 'COMPLETED' ? 'text-gray-400 line-through': 'text-white'}`}>{topic.title}</p>
+                                                    <p className={`font-medium truncate ${status === 'completed' ? 'text-gray-400 line-through': 'text-white'}`}>{topic.title}</p>
                                                 </div>
 
                                                 {/* In Progress button */}
-                                                {status !== 'COMPLETED' && (
-                                                    <button onClick={()=>handleProgressUpdate(topic.topic_id, status==='IN_PROGRESS' ? 'NOT_STARTED' : 'IN_PROGRESS')} disabled={isUpdating} className={`text-xs px-2.5 py-1 rounded-full border transition disabled:cursor-not-allowed ${status === 'IN_PROGRESS'? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
-                                        : 'text-gray-600 border-gray-700 hover:text-yellow-400'}`}>{status === 'IN_PROGRESS' ? 'In Progress': 'Start'}</button>
+                                                {status !== 'completed' && (
+                                                    <button onClick={()=>handleProgressUpdate(topic.topic_id, status==='in_progress' ? 'not_started' : 'in_progress')} disabled={isUpdating} className={`text-xs px-2.5 py-1 rounded-full border transition disabled:cursor-not-allowed ${status === 'in_progress'? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
+                                        : 'text-gray-600 border-gray-700 hover:text-yellow-400'}`}>{status === 'in_progress' ? 'In Progress': 'Start'}</button>
                                                 )}
 
                                                 {/* Expand Toggle  */}

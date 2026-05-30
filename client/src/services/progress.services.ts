@@ -5,6 +5,7 @@ export const updateProgress = async (
   topic_id: number,
   status: ProgressStatus
 ): Promise<void> => {
+  // Status values are already snake_case per types — send directly
   await api.patch('/progress', { topic_id, status })
 }
 
