@@ -21,12 +21,12 @@ const features = [
     },{
         icon: <BookOpen size={22} className="text-yellow-400"/>,
         title: 'Curated Resources',
-        description: 'Each topic comes with videos , articles , docs and exercise - all in one place.'
+        description: 'Each topic comes with videos, articles, docs and exercise - all in one place.'
     }
 ]
 
     const steps = [
-        { step: '01', title: 'Enter your topic', description: 'Tell us what you what to learn and your goal' },
+        { step: '01', title: 'Enter your topic', description: 'Tell us what you want to learn and your goal' },
         { step: '02', title: 'AI builds the path', description: "Get a week-by-week structured roadmap instantly" },
         { step: '03', title: 'Learn and track', description: 'Follow the roadmap and mark your progress' }
     ]
@@ -52,7 +52,7 @@ return (
                 <>
                     <button onClick={()=>navigate('/login')} className="text-gray-400 hover:text-white transition text-sm font-medium">Sign in</button>
 
-                    <button onClick={()=>navigate('/register')} className="bg-indigo-600 hoverLbg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transistion tex-sm">Get Started</button>
+                    <button onClick={()=>navigate('/register')} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transition text-sm">Get Started</button>
                 </>
             )}
         </div>
@@ -86,7 +86,7 @@ return (
 
                     {/* CTA buttons  */}
                     <div className="flex items-center justify-center gap-4 flex-wrap">
-                        <button onClick={handleGetStarted} className="flex items-center gap-2 bg-indigo-600 hover;bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg">Get Started Free <ArrowRight size={20} /></button>
+                        <button onClick={handleGetStarted} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg">Get Started Free <ArrowRight size={20} /></button>
                         <button onClick={()=> navigate('/login')} className="text-gray-400 hover:text-white font-semibold px-8 py-3.5 rounded-xl border border-gray-700 hover:border-gray-500 transition text-lg">
                             Sign in
                         </button>
@@ -105,7 +105,7 @@ return (
                         Everything you need to learn faster
                     </h2>
                     <p className="text-gray-400">
-                        Stop wasting time figuring out waht to learn next.
+                        Stop wasting time figuring out what to learn next.
                     </p>
                 </motion.div>
 
@@ -148,7 +148,7 @@ return (
                             className="text-center p-6">
                                 <div className="text-5xl font-bold text-indigo-500/20 mb-4">{step.step}</div>
                                 <h3 className="text-white font-semibold text-lg mb-2">{step.title}</h3>
-                                <p className="text-gray-500 text-sm leading-relaxed"></p>
+                                <p className="text-gray-500 text-sm leading-relaxed">{step.description}</p>
                             </motion.div>
                     ))}
                 </div>
@@ -162,7 +162,7 @@ return (
           transition={{ delay: 0.4 }}
           className="bg-linear-to-r from-indigo-500/10 to-purple-500/10
                      border border-indigo-500/20 rounded-3xl p-12 text-center">
-                        <h2 className="text-3xl gont-bold text-white mb-4">
+                        <h2 className="text-3xl font-bold text-white mb-4">
                             Ready to start learning?
                         </h2>
                         <p className="text-gray-400 mb-8 max-w-xl mx-auto">
@@ -178,7 +178,7 @@ return (
                             ))}
                         </div>
 
-                        <button onClick={handleGetStarted} className="flex items-center gap-2 bg-indigo-600 hover:g-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl transition mx-auto">Get Started Free
+                        <button onClick={handleGetStarted} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl transition mx-auto">Get Started Free
                             <ArrowRight size={20} />
                         </button>
                      </motion.div>
