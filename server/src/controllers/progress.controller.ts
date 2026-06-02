@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { updateProgress, getRoadmapProgress } from "../services/progress.service.ts";
+import { AppError } from "../middlewares/error.middleware.ts";
 
 //PATCH /api/progress
 export const update = async (req:Request, res:Response):Promise<void> => {
@@ -10,11 +11,11 @@ export const update = async (req:Request, res:Response):Promise<void> => {
         res.status(200).json({success: true, data: progress});
         
     } catch (error:unknown) {
-        const message = error instanceof Error ? error.message : String(error)
-        if(message.toLowerCase().includes('not found')){
-            res.status(404).json({success: false, message});
-            return;
+        if(error instanceof AppError){
+            res.status(error.statusCode).json({success:false, message: error.message})
         }
+        const message = error instanceof Error ? error.message : String(error)
+        
         res.status(500).json({success: false, message});
         return;
     }    
@@ -35,14 +36,13 @@ export const getRoadmap = async (req:Request, res:Response) => {
         res.status(200).json({success: true, data: progress})
 
     } catch (error:unknown) {
-        const message = error instanceof Error ? error.message : String(error)
-        if(message.toLowerCase().includes('not found')){
-
-            res.status(404).json({success: false, message});
+        if(error instanceof AppError){
+            res.status(error.statusCode).json({success: false, message:error.message});
             return;
         }
-        res.status(500).json({success: false, message});
-            return;
+        const message = error instanceof Error ? error.message : String(error)
+        res.status(500).json({sucess:false, message})
+        
 
     }
 }

@@ -37,6 +37,8 @@ export interface TopicResponse{
     description: string
     week_number: number
     order_index: number
+    created_at: string
+    
     resources: ResourceResponse[]
 }
 export interface ResourceResponse{

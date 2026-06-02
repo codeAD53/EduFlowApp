@@ -4,7 +4,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 // Ensure the environment variable is set (Gemini uses GEMINI_API_KEY by default)
 const apiKey = process.env.GEMINI_API_KEY
 if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is not set");
+    throw new Error("GEMINI_API_KEY is not set.  Add it to your .env file: GEMINI_API_KEY=your_key_here");
 }
 
 const ai = new GoogleGenAI({ apiKey });
@@ -99,6 +99,7 @@ export const generateRoadmapFromAI = async (
         return roadmap;
 
     } catch (err) {
+        console.error('AI_SERVICE_ERROR',err); //Logging actual GEMINI error (qouta,key,network)
         const parseError = new Error('Failed to generate or parse AI roadmap');
         (parseError as Error & { cause?: unknown }).cause = err;
         throw parseError;

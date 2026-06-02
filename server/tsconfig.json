@@ -35,13 +35,12 @@
     // Recommended Options
     "strict": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "noEmit": true,
+    "rewriteRelativeImportExtensions": true,
     "allowImportingTsExtensions": true
   },
     "include": ["src/**/*"],

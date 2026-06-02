@@ -1,5 +1,6 @@
 import pool from "../db/index.ts";
-import type { RoadmapInput, RoadmapResponse } from "../types/roadmaps.types.ts";
+import { AppError } from "../middlewares/error.middleware.ts";
+import type { RoadmapInput, RoadmapResponse, TopicResponse } from "../types/roadmaps.types.ts";
 import { generateRoadmapFromAI } from "./ai.services.ts";
 //Generate + Save raodmap
 
@@ -63,26 +64,61 @@ export const getRoadmapById = async (
     )
 
     if(roadmapResult.rows.length === 0){
-        throw new Error("Roadmap not found");
+        throw new AppError("Roadmap not found",404);
     }
     const roadmap = roadmapResult.rows[0];
 
-    //GET Topics
-    const topicsResult = await pool.query(
-        'SELECT * FROM topics WHERE roadmap_id = $1 ORDER BY week_number, order_index',[roadmapId]
-    )
-    
-    //GET resources for each topic
-    const topics = await Promise.all(
-        topicsResult.rows.map(async (topic)=>{
-            const resourcesResult = await pool.query(
-                'SELECT * FROM resources WHERE topic_id = $1',[topic.topic_id]
-            )
-            return { ...topic, resources: resourcesResult.rows }
-        })
-    )
-    return {...roadmap, topics}
+    //Single JOIN query - avoids N+1 (previouly one query fired per topic)
+
+    const joinResult = await pool.query(`
+        SELECT t.topic_id, t.title, t.description, t.week_number, t.order_index, t.created_at, r.resource_id, r.title AS resource_title, r.url, r.type FROM topics t LEFT JOIN resources r ON t.topic_id = r.topic_id WHERE t.roadmap_id = $1 ORDER BY t.week_number, t.order_index, r.resource_id`,[roadmapId]);
+
+        //Group resources back under their topic
+        const topicsMap = new Map<number, TopicResponse>();
+        for(const row of joinResult.rows){
+            if(!topicsMap.has(row.topic_id)){
+                topicsMap.set(row.topic_id, {
+                    topic_id: row.topic_id,
+                    title: row.title,
+                    description: row.description,
+                    week_number: row.week_number,
+                    order_index: row.order_index,
+                    created_at: row.created_at,
+                    resources: []
+                })
+            }
+            if(row.resource_id){
+                const topic = topicsMap.get(row.topic_id);
+                if(topic){
+                    topic.resources.push({
+                        resource_id: row.resource_id,
+                        topic_id: row.topic_id,
+                        title: row.resource_title,
+                        url: row.url,
+                        type: row.type
+                    })
+                }
+            }
+        }
+        const topics = Array.from(topicsMap.values());
+        return { ...roadmap, topics }
 }
+    // //GET Topics
+    // const topicsResult = await pool.query(
+    //     'SELECT * FROM topics WHERE roadmap_id = $1 ORDER BY week_number, order_index',[roadmapId]
+    // )
+    
+    // //GET resources for each topic
+    // const topics = await Promise.all(
+    //     topicsResult.rows.map(async (topic)=>{
+    //         const resourcesResult = await pool.query(
+    //             'SELECT * FROM resources WHERE topic_id = $1',[topic.topic_id]
+    //         )
+    //         return { ...topic, resources: resourcesResult.rows }
+    //     })
+    // )
+    // return {...roadmap, topics}
+
 
 //Fetch all roadmaps for a user (no topics, just summary)
 
@@ -100,7 +136,7 @@ export const deleteRoadmap = async (roadmapId: number, userId: number):Promise<v
     )
 
     if(result.rowCount === 0){
-        throw new Error("Roadmap not found or unauthorized")
+        throw new AppError("Roadmap not found or unauthorized",404)
     }
 }
 

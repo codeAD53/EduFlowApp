@@ -3,9 +3,11 @@ import { update, getRoadmap } from "../controllers/progress.controller.ts";
 import { protect } from "../middlewares/auth.middleware.ts";
 import { body } from "express-validator";
 import { validate } from "../middlewares/validate.middleware.ts";
+import { IdParamRule } from "../validator/id.validator.ts";
 
 const router = Router();
 router.use(protect);
+
 
 const protectRules = [
     body('topic_id')
@@ -19,6 +21,6 @@ const protectRules = [
 ]
 
 router.patch('/',protectRules, validate, update);
-router.get('/:roadmapId',getRoadmap)
+router.get('/:roadmapId',IdParamRule,validate, getRoadmap);
 
 export default router

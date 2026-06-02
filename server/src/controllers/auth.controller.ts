@@ -26,10 +26,12 @@ export const login = async (req:Request, res:Response):Promise<void> => {
             success: true,
             data: result
         })
-    } catch (error:any) {
-        res.status(400).json({
+    } catch (error:unknown) {
+        const message = error instanceof Error ? error.message : 'Internal Server Error';
+        const status = message === 'Internal Server Error' ? 500 : 400;
+        res.status(status).json({
             success: false,
-            message: error.message
+            message
         })
     }
 }

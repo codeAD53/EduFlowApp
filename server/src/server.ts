@@ -4,19 +4,37 @@ import express from 'express'
 import type {Application} from 'express'
 import cors from 'cors'
 import authRoutes from './routes/auth.routes.ts'
-import { protect } from './middlewares/auth.middleware.ts';
 import { notFound, globalHandler } from './middlewares/error.middleware.ts';
 import roadmapRoutes from './routes/roadmap.routes.ts'
 import progressRoutes from './routes/progress.routes.ts'
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 //LOAD env variables first - before anything else
 
 
 const app: Application = express();
+
+//Security headers
+app.use(helmet());
+
+//CORS - restrict origin, methods and headers
 app.use(cors({
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173', //Vite default port
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());  // Parse incoming JSON requests
+
+//Rate Limiter for the AI generate endpoint (Protect GEMINI Quota)
+const generateLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 5,
+    message: {success: false, message: 'Too many requests. Please wait a few minutes and try again'},
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 app.get('/health',(req,res)=>{
     res.json({
         status: 'OK',
@@ -26,17 +44,10 @@ app.get('/health',(req,res)=>{
 })
 
 app.use('/api/auth',authRoutes);
+app.use('/api/roadmap/generate',generateLimiter);
+
 app.use('/api/roadmap',roadmapRoutes)
 app.use('/api/progress',progressRoutes)
-
-//Protected test route HERE
-app.get('/api/protected',protect,(req,res)=>{
-    res.json({
-        success: true,
-        message: 'You accessed a protected route',
-        user: req.user
-    });
-});
 
 app.use(notFound);
 app.use(globalHandler);

@@ -1,7 +1,4 @@
 import { Pool } from 'pg'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 const db_port = parseInt(process.env.DB_PORT,10);
 if(isNaN(db_port)){
@@ -13,13 +10,17 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   user:     process.env.DB_USER,
   password: process.env.DB_PASSWORD,
+
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000 //Prevent hanging and better scalability
 })
 
 // Test connection
 
    pool.connect()
         .then(client =>{
-         console.log('Postgresql connected successfully .....')
+         console.log('Database connected successfully .....')
          client.release()
         })
         

@@ -82,7 +82,7 @@ export const globalHandler = (
     res.status(500).json({
         success: false,
         message: process.env.NODE_ENV === 'production'
-        ? 'Something went strong' : error.message,
+        ? 'Something went wrong' : error.message,
         ...(process.env.NODE_ENV !== 'production' && {stack: error.stack})
     })
 }

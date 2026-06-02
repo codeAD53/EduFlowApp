@@ -40,11 +40,10 @@ export const protect = (req:Request, res:Response, next:NextFunction) => {
         //Attach user to request
         req.user = decoded
         next(); //move to next middleware or controller
-    } catch (error:unknown) {
+    } catch {
         return res.status(401).json({
             success: false,
             message: 'Invalid or expired token',
-            error: error as Error
         }) 
     }
 }
