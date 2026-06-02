@@ -30,3 +30,5 @@ npm install react-hot-toast            # Toast notifications
 
 # State (only if you go beyond Context)
 # npm install zustand                  # Lightweight, skip for now
+
+<!--  (?=.*[A-Z])(?=.*\d).*) -->

@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 const features = [
     {
         icon: <Sparkles size={22} className="text-indigo-400"/>,
-        title: 'AI_Generated Roadmaps',
+        title: 'AI-Generated Roadmaps',
         description: 'Enter a topic and goal - get a complete structured learning path built by AI instantly.'
     },
     {
@@ -49,11 +49,11 @@ return (
             {isAuthenticated ? (
                 <button onClick={()=>navigate('/dashboard')} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transition text-sm">Go to DashBoard</button>
             ): (
-                <>
+                <div className="flex items-center gap-3">
                     <button onClick={()=>navigate('/login')} className="text-gray-400 hover:text-white transition text-sm font-medium">Sign in</button>
 
                     <button onClick={()=>navigate('/register')} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transition text-sm">Get Started</button>
-                </>
+                </div>
             )}
         </div>
         </nav>
@@ -188,7 +188,7 @@ return (
         <footer className="border-t border-gray-800 py-8">
             <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
                 <p className="text-gray-600 text-sm">
-                    &copy; 2025 EduFlow. Built By Aditya
+                    &copy; {new Date().getFullYear()} EduFlow. Built By Aditya
                 </p>
                 <p className="text-gray-700 text-sm">
                     AI-Powered Learning Platform

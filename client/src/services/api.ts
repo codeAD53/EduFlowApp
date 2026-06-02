@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { STORAGE_KEYS } from '../constants/StorageKEYS'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api',
@@ -9,7 +10,7 @@ const api = axios.create({
 
 // Attach token to every request automatically
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem(STORAGE_KEYS.TOKEN)
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -21,8 +22,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
+      localStorage.removeItem(STORAGE_KEYS.TOKEN)
+      localStorage.removeItem(STORAGE_KEYS.USER)
       window.location.href = '/login'
     }
     return Promise.reject(error)

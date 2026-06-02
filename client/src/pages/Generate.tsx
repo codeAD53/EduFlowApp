@@ -22,7 +22,7 @@ const Generate = () => {
         setFormData((prev)=>({...prev, [e.target.name]: e.target.value}))
     }
 
-    const handleSelect = (field: string, value: string) => {
+    const handleSelect = (field: keyof typeof initialForm, value: string) => {
         setFormData((prev)=>({...prev, [field]: value}));
     }
     const handleSubmit = async (e:React.FormEvent) => {
@@ -86,7 +86,7 @@ return (
                     <BookIcon />
                     What do you want to learn?
                     </label>
-                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="e.g. React, Machine Learning, System Design" required disabled={isLoading} className="w-full bg-gray-800 border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500  focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed" /> 
+                    <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="e.g. React, Machine Learning, System Design" required disabled={isLoading} maxLength={100} minLength={3} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500  focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed" /> 
                 </div>
 
                 {/* Goal */}
@@ -95,7 +95,7 @@ return (
                         <Target size={14}/>
                         What is your goal?
                     </label>
-                    <textarea name="goal" value={formData.goal} onChange={handleChange} placeholder="e.g. Build production ready React apps with TypeScript" required disabled={isLoading} rows={3} className="w-full bg-gray-800 border border-gray-700 px-4 py-3 text-white placeholder-gray-500 rounded-lg
+                    <textarea name="goal" value={formData.goal} onChange={handleChange} placeholder="e.g. Build production ready React apps with TypeScript" required disabled={isLoading} rows={3} maxLength={300} minLength={10} className="w-full bg-gray-800 border border-gray-700 px-4 py-3 text-white placeholder-gray-500 rounded-lg
                     focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition disabled:cursor-not-allowed" />
                 </div>
 

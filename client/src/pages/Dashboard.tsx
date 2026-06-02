@@ -13,7 +13,7 @@ const Dashboard = () => {
     const {user, logout} = useAuth();
 
     const [roadmaps, setRoadmaps] = useState<Roadmap[]>([]);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [deletingId, setDeletingId] = useState<number | null>(null);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const Dashboard = () => {
                 console.error(err);
                 toast.error("Failed to fetch roadmaps");
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         };
         loadRoadmaps();
@@ -51,8 +51,8 @@ const Dashboard = () => {
 
     const handleLogout = () => {
         logout();
-        navigate('/login');
         toast.success("Logged out successfully");
+        navigate('/login');
     }
 
     const getLevelColor = (level: string) => {
@@ -75,7 +75,7 @@ const Dashboard = () => {
                     <span className="text-gray-400 text-sm">
                         Hey, <span className="text-white font-medium">{user?.name}</span>
                     </span>
-                    <button onClick={handleLogout} className="flex center gap-2 text-gray-400 hover:text-white transition text-sm">
+                    <button onClick={handleLogout} className="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
                         <LogOut size={16} />
                         Logout
                     </button>
@@ -142,7 +142,7 @@ const Dashboard = () => {
                             initial={{opacity: 0, y: 20}}
                             animate={{opacity: 1, y: 0}}
                             transition={{delay: index * 0.07}}
-                            onClick={()=>navigate(`/roadmap/${roadmap.roadmap_id}`)} className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-indigo-500/50 hover::bg-gray-800/50 cursor-pointer transition group">
+                            onClick={()=>navigate(`/roadmap/${roadmap.roadmap_id}`)} className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-indigo-500/50 hover:bg-gray-800/50 cursor-pointer transition group">
                                 {/* Level badge */}
                                 <div className="flex items-center justify-between mb-4">
                                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${getLevelColor(roadmap.level)}`}>{roadmap.level}</span>
@@ -162,7 +162,7 @@ const Dashboard = () => {
                                 </p>
 
                                 {/* Footer */}
-                                <div className="flex items-center justigy-between mt-auto pt-4 border-t border-gray-800">
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-800">
                                     <div className="flex items-center justify-center gap-3 text-xs text-gray-500">
                                         <span>{roadmap.duration}</span>
                                         <span>.</span>

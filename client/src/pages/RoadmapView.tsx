@@ -108,7 +108,7 @@ const RoadmapView = () => {
 
 
     const getTopicStatus = (topicId:number):ProgressStatus => {
-        return (progress?.topics.find(t => t.topic_id === topicId)?.status as ProgressStatus) || 'not_started'
+        return (progress?.topics.find(t => t.topic_id === topicId)?.status) ?? 'not_started'
     }
 
     const getStatusColor = (status: string) => {
@@ -130,12 +130,13 @@ const RoadmapView = () => {
     }
 
     //Group topics by week
-    const groupedTopics = roadmap?.topics?.reduce((acc, topic)=>{
+    const groupedTopics = roadmap?.topics?.reduce<Record<number, typeof roadmap.topics>>((acc, topic)=>{
         const week = topic.week_number
         if(!acc[week]) acc[week] = []
-        acc[week].push(topic)
+        acc[week]!.push(topic)
         return acc
-    }, {} as Record<number, typeof roadmap.topics>)
+    }, {} 
+)
 
     if(isLoading){
         return (

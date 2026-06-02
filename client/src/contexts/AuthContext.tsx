@@ -7,7 +7,6 @@ interface AuthContextTypes {
     user: User | null
     token: string | null
     isAuthenticated: boolean
-    isLoading: boolean
     login: (token: string, user: User) => void
     logout: () => void
 }
@@ -33,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return localStorage.getItem(STORAGE_KEYS.TOKEN)
         
     });
-    const [isLoading] = useState(false);
+    
 
     const login = (token: string, user: User) => {
         localStorage.setItem(STORAGE_KEYS.TOKEN, token)
@@ -53,7 +52,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             user,
             token,
             isAuthenticated: !!token && !!user,
-            isLoading,
             login,
             logout
         }}>{children}</AuthContext.Provider>

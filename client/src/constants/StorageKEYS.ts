@@ -2,6 +2,5 @@ export const STORAGE_KEYS = {
     TOKEN: 'token',
     USER: 'user',
     REMEMBER_ME: 'rememberEmail'
-}
+} as const;
 
-// (?=.*[A-Z])(?=.*\d).*)

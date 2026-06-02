@@ -19,7 +19,7 @@ const Register = () => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setshowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev=>({ ...prev, [e.target.name]: e.target.value }))
@@ -171,7 +171,7 @@ transition={{duration: 0.4}} className="min-h-screen bg-gray-950 flex items-cent
               </p>
 
               <button type="button" onClick={()=>{
-                setshowPassword(prev => !prev)
+                setShowPassword(prev => !prev)
               } } aria-label={showPassword ? "Hide-Password" : "Show-Password"} className="absolute right-3 top-1/2 -translate-y-1/2
                              text-sm text-indigo-400 hover:text-indigo-300" >
                                 {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}

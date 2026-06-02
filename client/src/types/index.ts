@@ -8,13 +8,15 @@ export interface AuthResponse {
   token: string
   user: User
 }
-
+export type ResourceType =  'video' | 'article' | 'documentation' | 'exercise';
+export type RoadmapLevel = 'beginner' | 'intermediate' | 'advanced';
+export type ProgressStatus = 'not_started' | 'in_progress' | 'completed';
 export interface Resource {
   resource_id: number
   topic_id: number
   title: string
   url: string
-  type: string
+  type: ResourceType
 }
 
 export interface Topic {
@@ -33,7 +35,7 @@ export interface Roadmap {
   user_id: number
   title: string
   goal: string
-  level: string
+  level: RoadmapLevel
   duration: string
   is_completed: boolean
   created_at: string
@@ -55,5 +57,3 @@ export interface RoadmapProgress {
     status: ProgressStatus
   }[]
 }
-
-export type ProgressStatus = 'not_started' | 'in_progress' | 'completed'

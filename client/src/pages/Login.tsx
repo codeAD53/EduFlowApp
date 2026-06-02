@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import {login as loginService} from '../services/auth.services'
@@ -8,16 +8,17 @@ import { Eye, EyeOff, Mail } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import {motion} from 'framer-motion'
 import { STORAGE_KEYS } from "../constants/StorageKEYS";
-const initialFormState = {
-    email: localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) || '',
-    password: ''
-}
 
 const Login = () => {
 const navigate = useNavigate();
+const location = useLocation();
 const { isAuthenticated, login } = useAuth();
 
-const [formData, setFormData] = useState(()=>(initialFormState))
+//lazy initializer - reads localStorage at mount time, not at module load time
+const [formData, setFormData] = useState(()=>({
+    email: localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) || '',
+    password: ''
+}))
 const [isLoading, setIsLoading] = useState(false);
 const [showPassword, setShowPassword] = useState(false);
 const [rememberMe, setRememberMe] = useState(()=>(Boolean(localStorage.getItem(STORAGE_KEYS.REMEMBER_ME)))); //Boolean(null) -> false
@@ -59,7 +60,10 @@ const handleSubmit = async(e:React.FormEvent) => {
         }
 
         toast.success(`Welcome back, ${data.user.name}!`);
-        navigate('/dashboard')
+
+        //redirect back to where the user was trying to go, or dashboard
+        const from = (location.state as {from?: string})?.from || 'dashboard';
+        navigate(from);
     }catch(error){
         const err = error as AxiosError<{message: string}>
         toast.error(err.response?.data?.message || 'Login Failed. Please check your credentials.')
