@@ -8,7 +8,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Generate from './pages/Generate'
 import RoadmapView from './pages/RoadmapView'
-import NotFound from './pages/NotFound'
+import NotFound from './pages/NotFound1'
 
 function App() {
   return (

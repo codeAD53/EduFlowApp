@@ -62,7 +62,7 @@ const handleSubmit = async(e:React.FormEvent) => {
         toast.success(`Welcome back, ${data.user.name}!`);
 
         //redirect back to where the user was trying to go, or dashboard
-        const from = (location.state as {from?: string})?.from || 'dashboard';
+        const from = (location.state as {from?: string})?.from || '/dashboard';
         navigate(from);
     }catch(error){
         const err = error as AxiosError<{message: string}>

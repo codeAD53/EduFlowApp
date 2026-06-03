@@ -47,7 +47,7 @@ return (
         <div className="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
             <h1 className="text-xl font-bold text-white">EduFlow</h1>
             {isAuthenticated ? (
-                <button onClick={()=>navigate('/dashboard')} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transition text-sm">Go to DashBoard</button>
+                <button onClick={()=>navigate('/dashboard')} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transition text-sm">Go to Dashboard</button>
             ): (
                 <div className="flex items-center gap-3">
                     <button onClick={()=>navigate('/login')} className="text-gray-400 hover:text-white transition text-sm font-medium">Sign in</button>

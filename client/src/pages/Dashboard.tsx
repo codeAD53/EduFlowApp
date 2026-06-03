@@ -154,7 +154,7 @@ const Dashboard = () => {
                                 </div>
 
                                 {/* Title */}
-                                <h3 className="text-white font-semibold text-lg mg-2 line-clamp-2">{roadmap.title}</h3>
+                                <h3 className="text-white font-semibold text-lg mb-2 line-clamp-2">{roadmap.title}</h3>
 
                                 {/* Goal */}
                                 <p className="text-white font-semibold text-lg mb-2 line-clamp-2">

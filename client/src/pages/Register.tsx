@@ -152,7 +152,7 @@ transition={{duration: 0.4}} className="min-h-screen bg-gray-950 flex items-cent
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                autoComplete='current-password'
+                autoComplete='new-password'
                 placeholder="••••••••"
                 disabled={isLoading}
                 required

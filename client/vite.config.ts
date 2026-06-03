@@ -19,10 +19,10 @@ export default defineConfig({
     chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
-        //Split vendor libs into separate chunk for better caching 
-        manualChunks: {
-          vendor: ['react','react-dom','react-router-dom'],
-          motion: ['framer-motion'],
+        //Split vendor libs into separate chunk for better caching caching
+        manualChunks(id) {
+          if(id.includes('node_modules/framer-motion')) return 'motion'
+          if(id.includes('node_modules')) return 'vendor'
         }
       }
     }
