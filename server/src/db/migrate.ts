@@ -7,7 +7,11 @@ const runMigrations = async () => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const migrationsDir = path.join(__dirname, 'migrations')
+  const migrationsDir = [path.join(__dirname, 'migrations'), path.join(process.cwd(), 'src', 'db', 'migrations')].find(fs.existsSync);
+
+  if(!migrationsDir){
+    throw new Error('Migration directory not found');
+  }
 
   // Ensure schema_migrations table exists
   await pool.query(`

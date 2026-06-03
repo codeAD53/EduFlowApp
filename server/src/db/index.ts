@@ -1,5 +1,6 @@
 import { Pool } from 'pg'
-
+import dotenv from 'dotenv'
+dotenv.config();
 const db_port = parseInt(process.env.DB_PORT,10);
 if(isNaN(db_port)){
   throw new Error("DB_PORT must be valid number");

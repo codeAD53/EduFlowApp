@@ -15,15 +15,16 @@ BEGIN
 END $$;
 
 DO $$
+BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_constraint c JOIN pg_class t ON c.conrelid = t.oid WHERE c.conname = 'check_valid_type' AND t.relname = 'resources'
     )
     THEN
-        ALTER TABLE resources ADD CONSTRAINT check_valid_type CHECK (type IN('video','article','documentation','excercise'));
+        ALTER TABLE resources ADD CONSTRAINT check_valid_type CHECK (type IN('video','article','documentation','exercise'));
     END IF;
 END $$;
 
---Added indexes on Foreign Keys (PostgreSQl does not aut-index FK columns)
+--Added indexes on Foreign Keys (PostgreSQl does not default-index FK columns)
 CREATE INDEX IF NOT EXISTS idx_roadmap_user_id ON roadmaps(user_id);
 CREATE INDEX IF NOT EXISTS idx_topic_roadmap_id ON topics(roadmap_id);
 CREATE INDEX IF NOT EXISTS idx_resources_topic_id ON resources(topic_id);

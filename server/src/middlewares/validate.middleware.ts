@@ -1,5 +1,6 @@
 import { body, validationResult, type ValidationError } from "express-validator";
 import type { Request, Response, NextFunction } from "express";
+import z from "zod";
 
 export const validate = (req: Request, res:Response, next: NextFunction): void => {
     const errors = validationResult(req);
@@ -46,3 +47,12 @@ export const loginRules = [
     body('password')
         .notEmpty().withMessage('Password is required'),
 ]
+
+export const roadmapSchema = z.object({
+    goal: z.string().min(3),
+    level: z.enum([
+        'beginner','intermediate','advanced'
+    ]),
+    duration: z.number().min(1)
+});
+

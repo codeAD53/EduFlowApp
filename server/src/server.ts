@@ -14,6 +14,8 @@ import rateLimit from 'express-rate-limit';
 
 const app: Application = express();
 
+app.disable('x-powered-by');
+
 //Security headers
 app.use(helmet());
 
@@ -24,7 +26,15 @@ app.use(cors({
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-app.use(express.json());  // Parse incoming JSON requests
+app.use(express.json({limit: '1mb'}));  // Parse incoming JSON requests
+
+const authLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000, //10 minutes
+    max: 20,
+    message: {success: false, message: "Too many auth attempts. Please wait and try again"},
+    standardHeaders: true,
+    legacyHeaders: false,
+})
 
 //Rate Limiter for the AI generate endpoint (Protect GEMINI Quota)
 const generateLimiter = rateLimit({
@@ -43,7 +53,7 @@ app.get('/health',(req,res)=>{
     })
 })
 
-app.use('/api/auth',authRoutes);
+app.use('/api/auth',authLimiter,authRoutes);
 app.use('/api/roadmap/generate',generateLimiter);
 
 app.use('/api/roadmap',roadmapRoutes)

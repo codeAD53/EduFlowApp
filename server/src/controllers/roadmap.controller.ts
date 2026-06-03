@@ -1,19 +1,9 @@
-import type { Request, Response } from "express";
-
-import { AppError } from "../middlewares/error.middleware.ts";
+import type { NextFunction, Request, Response } from "express";
 import { generateAndSaveRoadmap, getRoadmapById, getUserRoadmaps, deleteRoadmap} from "../services/roadmap.service.ts";
 
-const getErrorStatus = (error: unknown): number => {
-    if (error instanceof AppError) return error.statusCode;
-    if (error instanceof Error) {
-        if (error.name === "NotFoundError") return 404;
-        if (error.name === "ValidationError" || error.name === "BadRequestError") return 400;
-    }
-    return 500;
-};
 
 //POST /api/roadmap/generate
-export const generateRoadmap = async (req:Request, res:Response):Promise<void> => {
+export const generateRoadmap = async (req:Request, res:Response, next:NextFunction):Promise<void> => {
 
     try {
         const userId = req.user!.id;
@@ -21,25 +11,23 @@ export const generateRoadmap = async (req:Request, res:Response):Promise<void> =
         res.status(201).json({success: true, data:roadmap});
     } catch (error:unknown) {
         console.error('GENERATE ERROR:', error)
-        const status = getErrorStatus(error);
-        res.status(status).json({ success: false, message: error instanceof Error ? error.message : String(error)});
+        next(error)
     }
 }
 
 //GET /api/roadmap
-export const getRoadmaps = async (req:Request, res: Response): Promise<void> => {
+export const getRoadmaps = async (req:Request, res: Response, next:NextFunction): Promise<void> => {
     try {
         const userId = req.user!.id;
         const roadmaps = await getUserRoadmaps(userId);
         res.status(200).json({success: true, data: roadmaps});
     } catch (error:unknown) {
-         const status = getErrorStatus(error);
-         res.status(status).json({ success: false, message: error instanceof Error ? error.message : String(error)});
+         next(error);
     }
 }
 
 //GET ROADMAP BY ID
-export const getRoadmap = async (req:Request, res:Response) => {
+export const getRoadmap = async (req:Request, res:Response, next:NextFunction) => {
     try{
 
         const userId = req.user!.id;
@@ -52,13 +40,12 @@ export const getRoadmap = async (req:Request, res:Response) => {
         res.status(200).json({ success: true, data: roadmap })
     }
     catch (error:unknown) {
-         const status = getErrorStatus(error);
-         res.status(status).json({ success: false, message: error instanceof Error ? error.message : String(error)});
+        next(error)
     }
 }
 
 //DELETE /api/roadmap/:id
-export const removeRoadmap = async (req: Request, res:Response) => {
+export const removeRoadmap = async (req: Request, res:Response, next:NextFunction) => {
     try {
         const userId = req.user!.id;
         const roadmapId = parseInt(String(req.params.id), 10);
@@ -73,7 +60,6 @@ export const removeRoadmap = async (req: Request, res:Response) => {
         res.status(200).json({ success: true, message: 'Roadmap deleted successfully' })
 
     } catch (error:unknown) {
-         const status = getErrorStatus(error);
-         res.status(status).json({ success: false, message: error instanceof Error ? error.message : String(error)});
+         next(error)
     }
 }

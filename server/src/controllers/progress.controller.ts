@@ -1,9 +1,8 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { updateProgress, getRoadmapProgress } from "../services/progress.service.ts";
-import { AppError } from "../middlewares/error.middleware.ts";
 
 //PATCH /api/progress
-export const update = async (req:Request, res:Response):Promise<void> => {
+export const update = async (req:Request, res:Response, next:NextFunction):Promise<void> => {
 
     try {
         const user_id =  req.user!.id;
@@ -11,18 +10,12 @@ export const update = async (req:Request, res:Response):Promise<void> => {
         res.status(200).json({success: true, data: progress});
         
     } catch (error:unknown) {
-        if(error instanceof AppError){
-            res.status(error.statusCode).json({success:false, message: error.message})
-        }
-        const message = error instanceof Error ? error.message : String(error)
-        
-        res.status(500).json({success: false, message});
-        return;
+        next(error);
     }    
 }
 
 //GET /api/progress/:roadmapId
-export const getRoadmap = async (req:Request, res:Response) => {
+export const getRoadmap = async (req:Request, res:Response, next:NextFunction) => {
     try {
         
         const userId = req.user!.id;
@@ -36,13 +29,6 @@ export const getRoadmap = async (req:Request, res:Response) => {
         res.status(200).json({success: true, data: progress})
 
     } catch (error:unknown) {
-        if(error instanceof AppError){
-            res.status(error.statusCode).json({success: false, message:error.message});
-            return;
-        }
-        const message = error instanceof Error ? error.message : String(error)
-        res.status(500).json({sucess:false, message})
-        
-
+       next(error)
     }
 }

@@ -29,8 +29,9 @@ export const globalHandler = (
     err: unknown,
     req:Request,
     res:Response, 
-    next: NextFunction
+    _next: NextFunction
 ) => {
+    void _next;
     const error: ErrorWithStatus = typeof err === 'object' && err !== null ? (err as ErrorWithStatus) : {message: String(err)};
     error.statusCode = error.statusCode || 500
     error.message = error.message || 'Internal Server Error'

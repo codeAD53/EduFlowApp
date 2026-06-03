@@ -9,6 +9,7 @@ declare namespace NodeJS {
         DB_PASSWORD:string
         JWT_SECRET:string
         JWT_EXPIRES_IN:string
-        ANTHROPIC_API_KEY:string
+        CORS_ORIGIN: string
+        GEMINI_API_KEY:string
     }
 }
