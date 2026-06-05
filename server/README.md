@@ -71,7 +71,7 @@ The system uses Google Gemini AI to generate personalized learning roadmaps and 
   
 ### Validation
 - express-validator
-- Zod (AI roadmap schema validation)
+
   
 ### Security
 - Helmet
@@ -86,6 +86,7 @@ The system uses Google Gemini AI to generate personalized learning roadmaps and 
 
 ### Clone Repository
 `git clone <repo-url>`
+
 `cd server`
 
 ### Install Dependencies
@@ -93,16 +94,24 @@ The system uses Google Gemini AI to generate personalized learning roadmaps and 
 
 ### Configure Environment Variables
 Create a `.env` file in the root directory.
+
 PORT=5000
+
 NODE_ENV=development
 
-DB_HOST=
-DB_PORT= 
-DB_NAME= 
-DB_USER= 
-DB_PASSWORD= 
+DB_HOST= 
+
+DB_PORT=  
+
+DB_NAME=  
+
+DB_USER=  
+
+DB_PASSWORD=  
+
 
 JWT_SECRET= 
+
 JWT_EXPIRES_IN=7d 
 
 GEMINI_API_KEY= 
