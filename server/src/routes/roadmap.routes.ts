@@ -26,7 +26,7 @@ const aiLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
 })
-router.post('/generate',aiLimiter, generateRules, validate, generateRoadmap);
+router.post('/generate', generateRules, validate,aiLimiter, generateRoadmap);
 router.get('/', getRoadmaps);
 router.get('/:id',IdParamRule, getRoadmap);
 router.delete('/:id',IdParamRule, removeRoadmap);

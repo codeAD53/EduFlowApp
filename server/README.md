@@ -3,7 +3,7 @@ AI Powered Learning Roadmap Generator Backend with Node.js, Express, TypeScript,
 ---
 
 ## Overview
-The EduFlow Backend provide secure REST APIs for authentication, AI-Powered roadmap generation, roadmap management, and learning progress tracking.
+The EduFlow Backend provides secure REST APIs for authentication, AI-Powered roadmap generation, roadmap management, and learning progress tracking.
 
 The system uses Google Gemini AI to generate personalized learning roadmaps and PostgreSQL to persist user data, roadmaps, resources, and progress.
 
@@ -26,7 +26,7 @@ The system uses Google Gemini AI to generate personalized learning roadmaps and 
 
 ### Roadmap Management
 - **Generate roadmap**
-- **Retrieve user Roadmaps**
+- **Retreive user Roadmaps**
 - **Retreive roadmap details**
 - **Delete Roadmaps**
   
@@ -84,7 +84,7 @@ The system uses Google Gemini AI to generate personalized learning roadmaps and 
 
 ## Installation
 
-### Clone Respository
+### Clone Repository
 `git clone <repo-url>`
 `cd server`
 
@@ -94,7 +94,7 @@ The system uses Google Gemini AI to generate personalized learning roadmaps and 
 ### Configure Environment Variables
 Create a `.env` file in the root directory.
 PORT=5000
-NODE_ENV=developement
+NODE_ENV=development
 
 DB_HOST=
 DB_PORT= 
@@ -150,7 +150,7 @@ GET /api/progress/:roadmapId
 ### Database Design
 
 ## Logging
-Structured application logging is implementation using Pino.
+Structured application logging is implemented using Pino.
 
 Logs include:
 - Application startup events
@@ -161,7 +161,7 @@ Logs include:
 
 ## Known Limitations
 - AI-generated resources may occasionally contain outdated or unavailable links.
-- Resource URLs are validated for format but not availablity.
+- Resource URLs are validated for format but not availability.
 - Roadmap quality depends on AI-generated responses.
 
 ---

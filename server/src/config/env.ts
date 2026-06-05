@@ -16,7 +16,13 @@ export const env = {
     NODE_ENV: process.env.NODE_ENV || "development",
     PORT: Number(process.env.PORT) || 5000,
     DB_HOST: getEnv("DB_HOST"),
-    DB_PORT: Number(getEnv("DB_PORT")),
+    DB_PORT: (() => {
+       const port =  Number(getEnv("DB_PORT"));
+       if(isNaN(port)){
+        throw new Error("DB_PORT must be a valid postive number");
+       }
+       return port;
+    })(),
     DB_NAME: getEnv("DB_NAME"),
     DB_USER: getEnv("DB_USER"),
     DB_PASSWORD: getEnv("DB_PASSWORD"),
