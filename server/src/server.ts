@@ -1,5 +1,4 @@
-import dotenv from 'dotenv'
-dotenv.config();
+import { env } from './config/env.ts'
 import express from 'express'
 import type {Application} from 'express'
 import cors from 'cors'
@@ -9,6 +8,8 @@ import roadmapRoutes from './routes/roadmap.routes.ts'
 import progressRoutes from './routes/progress.routes.ts'
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { logger } from './utils/logger.ts'
+import { requestId } from './middlewares/requestId.middleware.ts'
 //LOAD env variables first - before anything else
 
 
@@ -21,12 +22,13 @@ app.use(helmet());
 
 //CORS - restrict origin, methods and headers
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173', //Vite default port
+    origin: env.CORS_ORIGIN || 'http://localhost:5173', //Vite default port
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json({limit: '1mb'}));  // Parse incoming JSON requests
+app.use(requestId);
 
 const authLimiter = rateLimit({
     windowMs: 10 * 60 * 1000, //10 minutes
@@ -35,15 +37,6 @@ const authLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
 })
-
-//Rate Limiter for the AI generate endpoint (Protect GEMINI Quota)
-const generateLimiter = rateLimit({
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    max: 5,
-    message: {success: false, message: 'Too many requests. Please wait a few minutes and try again'},
-    standardHeaders: true,
-    legacyHeaders: false,
-});
 
 app.get('/health',(req,res)=>{
     res.json({
@@ -54,7 +47,7 @@ app.get('/health',(req,res)=>{
 })
 
 app.use('/api/auth',authLimiter,authRoutes);
-app.use('/api/roadmap/generate',generateLimiter);
+
 
 app.use('/api/roadmap',roadmapRoutes)
 app.use('/api/progress',progressRoutes)
@@ -62,15 +55,16 @@ app.use('/api/progress',progressRoutes)
 app.use(notFound);
 app.use(globalHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = Number(env.PORT) || 5000;
 const start = async () => {
-    await import('./db/index.ts');
+    const db = await import('./db/index.ts');
+    await db.testConnection();
     app.listen(PORT, ()=>{
-        console.log(`Server running on [ http://localhost:${PORT} ] (${process.env.NODE_ENV}) ....`);
+        logger.info(`Server running on [ http://localhost:${PORT} ] (${env.NODE_ENV}) ....`);
     })
 }   
 start().catch(error=>{
-    console.error(` Failed to start the server ${error}`);
+    logger.error(` Failed to start the server ${error instanceof Error ? error.message : String(error)}`);
     process.exit(1);
 })
 

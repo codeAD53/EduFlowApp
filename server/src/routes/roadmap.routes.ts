@@ -18,6 +18,7 @@ const generateRules = [
     body('duration').trim().notEmpty().withMessage("Duration is required").isLength({max:60}).withMessage('Duration must be 60 characters'),
 ]
 
+//Rate Limiter for the AI generate endpoint (Protect GEMINI Quota)
 const aiLimiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 mins
     max: 5,
@@ -25,7 +26,7 @@ const aiLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
 })
-router.post('/generate', generateRules, validate, aiLimiter, generateRoadmap);
+router.post('/generate', generateRules, validate,aiLimiter, generateRoadmap);
 router.get('/', getRoadmaps);
 router.get('/:id',IdParamRule, getRoadmap);
 router.delete('/:id',IdParamRule, removeRoadmap);

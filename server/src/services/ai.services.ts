@@ -1,13 +1,10 @@
 import { AppError } from "../middlewares/error.middleware.ts";
 import type { RoadmapInput, AIRoadmapOutput, Resource } from "../types/roadmaps.types.ts";
 import { GoogleGenAI, Type } from "@google/genai";
-
+import { env } from "../config/env.ts";
 const RESOURCE_TYPES = ['video', 'article', 'documentation', 'exercise'] as const;
 // Ensure the environment variable is set (Gemini uses GEMINI_API_KEY by default)
-const apiKey = process.env.GEMINI_API_KEY
-if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is not set.  Add it to your .env file: GEMINI_API_KEY=your_key_here");
-}
+const apiKey = env.GEMINI_API_KEY
 
 const ai = new GoogleGenAI({ apiKey });
 

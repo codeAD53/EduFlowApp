@@ -1,16 +1,17 @@
 import { Pool } from 'pg'
-import dotenv from 'dotenv'
-dotenv.config();
-const db_port = parseInt(process.env.DB_PORT,10);
-if(isNaN(db_port)){
-  throw new Error("DB_PORT must be valid number");
+import { env } from '../config/env.ts';
+import { logger } from '../utils/logger.ts';
+
+if (isNaN(env.DB_PORT)) {
+    throw new Error("DB_PORT must be valid number");
 }
+
 const pool = new Pool({
-  host:     process.env.DB_HOST,
-  port:     db_port,
-  database: process.env.DB_NAME,
-  user:     process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  host:     env.DB_HOST,
+  port:     env.DB_PORT,
+  database: env.DB_NAME,
+  user:     env.DB_USER,
+  password: env.DB_PASSWORD,
 
   max: 20,
   idleTimeoutMillis: 30000,
@@ -18,18 +19,20 @@ const pool = new Pool({
 })
 
 // Test connection
+export const testConnection = async () => {
+      try {
+          const client = await pool.connect();
+          logger.info("Database Connected Successfully");
+          client.release();
+      } catch (error:unknown) {
+                    logger.error(
+                        `Database Connection Failed: ${
+                            error instanceof Error ? error.message : String(error)
+                        }`
+                    );
 
-   pool.connect()
-        .then(client =>{
-         console.log('Database connected successfully .....')
-         client.release()
-        })
-        
-.catch((error:unknown)=>{
-      console.error("Database Connection Failed",error instanceof Error ? error.message : String(error));
-      process.exit(1);
-})
-    
-
-
+          throw error;
+      };
+      
+};
 export default pool
