@@ -111,7 +111,7 @@ p-8">
                     <input id='password' type={showPassword ? 'text' : "password" }name="password" value={formData.password} disabled={isLoading} onChange={handleChange}
                     autoComplete="current-password"
                     placeholder="••••••••" minLength={8}
-                    className="w-full bg-gray-800 border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none disabled:cursor-not-allowed focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" required
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none disabled:cursor-not-allowed focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" required
                     />
 
                 <button type="button"
