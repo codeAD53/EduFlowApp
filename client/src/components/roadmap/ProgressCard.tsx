@@ -7,11 +7,6 @@ interface ProgressCardProps {
   progress: RoadmapProgress;
 }
 
-interface ProgressCardProps {
-  roadmap: Roadmap;
-  progress: RoadmapProgress;
-}
-
 const ProgressCard = ({
   roadmap,
   progress,

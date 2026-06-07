@@ -1,7 +1,7 @@
 interface LoaderProps {
   size?: "sm" | "md" | "lg";
   text?: string;
-  inline: boolean;
+  inline?: boolean;
 }
 
 const sizeClasses = {

@@ -35,6 +35,7 @@ export const useRoadmapView = (
       return;
     }
 
+    const isActive = true;
     const fetchData = async () => {
       setIsLoading(true);
 
@@ -47,18 +48,19 @@ export const useRoadmapView = (
           getRoadmapProgress(roadmapId),
         ]);
 
+        if(!isActive) return;
         setRoadmap(roadmapData);
         setProgress(progressData);
       } catch (error) {
+        if(!isActive) return;
         console.error(error);
 
         toast.error(
           "Failed to load roadmap"
         );
-
         navigate("/dashboard");
       } finally {
-        setIsLoading(false);
+        if(isActive) setIsLoading(false);
       }
     };
 

@@ -14,6 +14,7 @@ const PageHeader = ({
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
         <button
           onClick={onBack}
+          aria-label="Go Back"
           className="text-gray-400 hover:text-white transition"
         >
           <ArrowLeft size={20} />

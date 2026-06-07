@@ -46,10 +46,11 @@ export const useTopicProgress = (
               t.status === "completed"
           ).length;
 
+        const totalTopics = updatedTopics.length;
         const percentage =
           Math.round(
             (completed /
-              updatedTopics.length) *
+              totalTopics) *
               100
           );
 

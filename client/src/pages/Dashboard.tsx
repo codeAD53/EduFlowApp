@@ -95,10 +95,11 @@ const Dashboard = () => {
                         />
                     </div>
                 )}
-                <p className="text-sm text-gray-500 mb-4">
+
+                { !isLoading && roadmaps.length > 0 && (<p className="text-sm text-gray-500 mb-4">
                     Showing {filteredRoadmaps.length} of {roadmaps.length} roadmaps
-                </p>
-                
+                </p>)}
+
                 {/* Roadmap grid */}
                 {!isLoading && filteredRoadmaps.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

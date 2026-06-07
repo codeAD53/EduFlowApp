@@ -65,7 +65,15 @@ const RoadmapView = () => {
             </div>
         )
     }
-    if (!roadmap) return null
+    if (!roadmap) return (
+        <div className="min-h-screen bg-gray-950 text-white">
+            <PageHeader title="Roadmap" onBack={()=>navigate('/dashboard')}/>
+            <div className="max-w-4xl mx-auto py-16 text-center">
+                <p className="text-gray-400">Roadmap not found.</p>
+                <button onClick={()=>navigate('dashboard')} className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition">Back to Dashboard</button>
+            </div>
+        </div>
+    )
     return (
         <div className="min-h-screen bg-gray-950 text-white">
             {/* navbar */}

@@ -22,6 +22,7 @@ export const useGenerateRoadmap = () => {
     };
 
     const generate = async () => {
+      if(isLoading) return null;
     if (!formData.level) {
       toast.error("Please select a level");
       return null;

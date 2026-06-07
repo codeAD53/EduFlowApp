@@ -1,6 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BarChart3, BookIcon, Clock, Sparkles, Target } from "lucide-react";
+import { BarChart3, BookIcon, Clock, Sparkles, Target } from "lucide-react";
 import { motion } from 'framer-motion'
 import Loader from "../components/common/Loader";
 import { useGenerateRoadmap } from "../hooks/useGenerateRoadmap";
@@ -14,7 +14,6 @@ const Generate = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (isLoading) return;
         const roadmap = await generate();
         if (roadmap) {
             navigate(`/roadmap/${roadmap.roadmap_id}`);

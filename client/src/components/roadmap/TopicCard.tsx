@@ -109,12 +109,17 @@ const TopicCard = ({
 
                             {/* In Progress button */}
                             {status !== 'completed' && (
-                                <button onClick={() => onStatusChange(topic.topic_id, status === 'in_progress' ? 'not_started' : 'in_progress')} disabled={isUpdating} className={`text-xs px-2.5 py-1 rounded-full border transition disabled:cursor-not-allowed ${status === 'in_progress' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
+                                
+                                <button 
+                                aria-label={status as ProgressStatus === "completed" ? "Mark as Not Started" : "Mark as Completed"}
+                                onClick={() => onStatusChange(topic.topic_id, status === 'in_progress' ? 'not_started' : 'in_progress')} disabled={isUpdating} className={`text-xs px-2.5 py-1 rounded-full border transition disabled:cursor-not-allowed ${status === 'in_progress' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
                                     : 'text-gray-600 border-gray-700 hover:text-yellow-400'}`}>{status === 'in_progress' ? 'In Progress' : 'Start'}</button>
                             )}
 
                             {/* Expand Toggle  */}
-                            <button onClick={() => onToggle(topic.topic_id)}
+                            <button 
+                            aria-label={isExpanded ? "Collapse Topic Details" : "Expand Topic Details"}
+                            onClick={() => onToggle(topic.topic_id)}
                                 className="text-gray-500 hover:text-white transition shrink-0">
                                 {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                             </button>

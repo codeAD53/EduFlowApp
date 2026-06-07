@@ -46,6 +46,7 @@ export default function RoadmapCard({
       transition={{ delay: index * 0.07 }}
       onClick={() => navigate(`/roadmap/${roadmap.roadmap_id}`)}
       onKeyDown={(e) => {
+        if(e.target !== e.currentTarget) return;
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           navigate(`/roadmap/${roadmap.roadmap_id}`);
@@ -65,6 +66,7 @@ export default function RoadmapCard({
 
         <button
           onClick={(e) => onDelete(roadmap.roadmap_id, e)}
+          onKeyDown={(e)=>e.stopPropagation()}
           disabled={deletingId === roadmap.roadmap_id}
           aria-label={`Delete roadmap ${roadmap.title}`}
           className="text-gray-600 hover:text-red-400 transition disabled:cursor-not-allowed"

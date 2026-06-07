@@ -18,7 +18,7 @@ const Navbar = ({userName, onLogout, showLogout = false}: NavbarProps) => {
                     </span>   
                     )}
 
-                    {showLogout && (
+                    {showLogout && onLogout && (
                          <button onClick={onLogout} className="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
                         <LogOut size={16} />
                         Logout
