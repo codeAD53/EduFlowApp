@@ -27,7 +27,7 @@ export interface Topic {
   week_number: number
   order_index: number
   resources: Resource[]
-  status?: string
+  status?: ProgressStatus
 }
 
 export interface Roadmap {
